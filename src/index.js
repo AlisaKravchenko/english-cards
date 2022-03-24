@@ -1,17 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import homeSlice from './redux/homeSlice';
+import { Provider } from 'react-redux';
+import { createBrowserHistory } from 'history';
+import {  routerMiddleware, connectRouter } from 'connected-react-router';
+import learningSlice from './redux/learningSlice';
+
+export const history = createBrowserHistory()
+
+const store = configureStore({
+  reducer: {
+    home: homeSlice,
+    learning: learningSlice,
+    router: connectRouter(history)
+  },
+  preloadedState: {
+    home: {
+      finishFirstInit: localStorage.getItem('first-visit') || false,
+    }
+    
+  },
+  middleware: [...getDefaultMiddleware(), routerMiddleware(history)]
+})
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
