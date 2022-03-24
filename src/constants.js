@@ -1,0 +1,1 @@
+export const BASE_BACKGROUND = '#00897b'
