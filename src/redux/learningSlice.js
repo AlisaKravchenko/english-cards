@@ -1,9 +1,33 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { getRepeatTime } from "../utils";
 
 const initialState = {
     countLearnWords: '5',
     words: {},
-    categories: []
+    categories: [],
+    repeat: {
+        // '30min': [],
+        // '9hours': [],
+        // '24hours': [],
+        // '1week': [],
+        // '2months': []
+        // '1800000': [],
+        // '7200000': [],
+        // '43200000': [],
+        // '86400000': [],
+        // '604800000': [],
+        // '5256000000': []
+        '10000': [],
+        '10001': [],
+        // '1002': [],
+        // '1000': [],
+        // '14000': []
+    },
+    learnedToday: {
+        day: new Date().getDate(),
+        count: 0,
+    },
+    learnedWords: [],
 }
 
 export const asyncGetWords = createAsyncThunk('GET_ASYNC_WORDS', async function() {
@@ -29,6 +53,27 @@ const learningSlice = createSlice({
         removeCategory(state, action){
             state.categories = current(state).categories.filter(el => el !== action.payload)
         },
+        addRepeatWord(state, action){
+            if (action.payload.repeatsCount < Object.keys(initialState.repeat).length){
+                const repeatTime = getRepeatTime(action.payload.repeatsCount, current(state))
+                state.repeat[repeatTime].push(action.payload)
+            } else {
+                state.learnedWords.push(action.payload)
+            }
+        },
+        deleteWordFromRepeat(state, action){
+            const key = Object.keys(state.repeat)[action.payload.repeatsCount]
+            state.repeat[key] = current(state).repeat[key].filter(el => el.word !== action.payload.word)
+        },
+        addLearnedToday(state){
+            state.learnedToday.count++
+        },
+        setLearnedToday(state){
+            state.learnedToday = {
+                day: new Date().getDate(),
+                count: 0
+            }
+        }
 
     },
     extraReducers: {
@@ -39,4 +84,4 @@ const learningSlice = createSlice({
 })
 
 export default learningSlice.reducer
-export const {getCountLearnWords, deleteWord, addCategory, removeCategory} = learningSlice.actions
+export const {getCountLearnWords, addLearnedToday, setLearnedToday, deleteWord, deleteWordFromRepeat, addRepeatWord, addCategory, removeCategory} = learningSlice.actions
