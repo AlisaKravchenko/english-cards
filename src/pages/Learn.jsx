@@ -2,10 +2,10 @@ import { useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { EndLearning } from './EndLearning'
 import { EndLearningCategories } from './EndLearningCategories'
-import { LearnCard2 } from '../components/LearnCard'
+import { LearnCard } from '../components/LearnCard'
 import { getWordsToLearn } from '../utils'
 
-export function Learning() {
+export function Learn() {
     const state = useSelector((state) => state.learning)
     const practiseWordsRef = useRef(getWordsToLearn(state))
 
@@ -23,7 +23,7 @@ export function Learning() {
     const cards = []
     for (let key in practiseWordsRef.current) {
         cards.push(
-            <LearnCard2
+            <LearnCard
                 currentWordObj={{ [key]: practiseWordsRef.current[key] }}
                 nextCard={nextCard}
             />

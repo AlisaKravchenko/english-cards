@@ -1,28 +1,24 @@
 import { push } from 'connected-react-router'
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { API_KEY_YANDEX } from '../config'
 import { Header } from '../layout/Header'
 import { Preloader } from '../layout/Preloader'
-import {
-    addLearnedToday,
-    addRepeatWord,
-    deleteWord,
-} from '../redux/learningSlice'
+import { addRepeatWord, deleteWordFromRepeat } from '../redux/learningSlice'
 import { getCardWordContent } from '../utils'
 
-export function LearnCard(props) {
+export function RepeatCard(props) {
     const { currentWordObj, nextCard } = props
-    const currentCategory = Object.keys(currentWordObj)[0]
-    const currentWord = currentWordObj[currentCategory]
-    const state = useSelector((state) => state)
+    const currentCategory = currentWordObj.category
+    const repeatsCount = currentWordObj.repeatsCount
+    const currentWord = currentWordObj.word
     const dispatch = useDispatch()
     const [countLocalLearned, setCountLocalLearned] = useState(0)
     let transcription = useRef('')
     let translate = useRef('')
     let examples = useRef([])
-    const [loading, setLoading] = useState(true)
     const [attempts, setAttempts] = useState('3 попытки')
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const utterance = new SpeechSynthesisUtterance(currentWord)
@@ -72,20 +68,24 @@ export function LearnCard(props) {
             {loading ? (
                 <Preloader />
             ) : (
-                <div className='container' data-word={currentWord}>
+                <div className='container'>
                     <button
                         className='btn back-btn'
                         onClick={() => {
                             dispatch(push('/home'))
                         }}
+                        style={{ marginBottom: '1rem' }}
                     >
                         Назад
                     </button>
-                    <p style={{ marginBottom: '0.3rem', marginTop: '1rem' }}>
-                        Выучено {countLocalLearned} из{' '}
+                    {/* <p style={{ marginBottom: '0.3rem', marginTop: '1rem' }}>
+                        Повторено {countLocalLearned} из{' '}
                         {state.learning.countLearnWords} слов
-                    </p>
+                    </p> */}
                     <div className='learn-block'>
+                        <p className='repeats-count'>
+                            {repeatsCount + 1}-й повтор слова
+                        </p>
                         {getCardWordContent(
                             currentCategory,
                             currentWord,
@@ -95,7 +95,6 @@ export function LearnCard(props) {
                             setAttempts,
                             attempts
                         )}
-
                         <div className='repeat-total'>
                             <button
                                 onClick={() => {
@@ -104,12 +103,9 @@ export function LearnCard(props) {
                                     setAttempts('3 попытки')
                                     setCountLocalLearned(countLocalLearned + 1)
                                     dispatch(
-                                        deleteWord({
+                                        deleteWordFromRepeat({
                                             word: currentWord,
-                                            category: currentCategory.slice(
-                                                0,
-                                                2
-                                            ),
+                                            repeatsCount,
                                         })
                                     )
                                     dispatch(
@@ -120,14 +116,13 @@ export function LearnCard(props) {
                                                 2
                                             ),
                                             time: Date.now(),
-                                            repeatsCount: 0,
+                                            repeatsCount: repeatsCount + 1,
                                         })
                                     )
-                                    dispatch(addLearnedToday())
                                 }}
                                 className='btn repeat-total-btn left-btn'
                             >
-                                Я запомнил это слово, отложить для повтора
+                                Я вспомнил это слово
                             </button>
                             <button
                                 onClick={() => {
@@ -137,7 +132,7 @@ export function LearnCard(props) {
                                 }}
                                 className='btn repeat-total-btn right-btn'
                             >
-                                Показывать это слово еще
+                                Я не вспомнил это слово
                             </button>
                         </div>
                     </div>

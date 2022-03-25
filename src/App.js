@@ -8,7 +8,8 @@ import { Switch,Route } from "react-router";
 import { finishFirstInit } from "./redux/homeSlice";
 import { Glossary } from './pages/Glossary';
 import { Categories } from './pages/Categories';
-import { Learning } from './pages/Learning';
+import { Repeat } from './pages/Repeat';
+import { Learn } from './pages/Learn';
 
 export function App(props) {
   const store = useStore()
@@ -28,9 +29,10 @@ export function App(props) {
          <Switch>
           <Route exact path='/' component={HelloPages} />
           <Route exact path='/home' component={Home} />
-          <Route exact path='/learning' component={Learning} />
+          <Route exact path='/learning' component={Learn} />
           <Route exact path='/glossary' component={Glossary} />
           <Route exact path='/categories' component={Categories} />
+          <Route exact path='/repeat' component={Repeat} />
          </Switch>
      </div>
     </ConnectedRouter>

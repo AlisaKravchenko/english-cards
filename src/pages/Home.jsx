@@ -1,15 +1,24 @@
 import { push } from 'connected-react-router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Header } from '../layout/Header'
-import { asyncGetWords } from '../redux/learningSlice'
+import { asyncGetWords, setLearnedToday } from '../redux/learningSlice'
+import { getRepeatPhrase } from '../utils'
 
 export function Home() {
     const dispatch = useDispatch()
     const state = useSelector((state) => state)
+    const [repeatTime, setRepeatTime] = useState(
+        'Доступно 0 слов для повторения'
+    )
+
     useEffect(() => {
         document.body.style.background = '#edeef0'
         dispatch(asyncGetWords())
+        getRepeatPhrase(state.learning, setRepeatTime)
+        if (new Date().getDate() !== state.learning.learnedToday.day) {
+            dispatch(setLearnedToday())
+        }
     }, [dispatch])
     return (
         <>
@@ -86,8 +95,10 @@ export function Home() {
                                     <td></td>
                                     <td>
                                         <p className='category-desc'>
-                                            Заучено сегодня: 5 из{' '}
-                                            {state.learning.countLearnWords}{' '}
+                                            Заучено сегодня:{' '}
+                                            {state.learning.learnedToday.count}{' '}
+                                            из {state.learning.countLearnWords}{' '}
+                                            слов
                                         </p>
                                     </td>
                                 </tr>
@@ -107,7 +118,12 @@ export function Home() {
                                         </span>
                                     </td>
                                     <td>
-                                        <button className='btn'>
+                                        <button
+                                            className='btn'
+                                            onClick={() => {
+                                                dispatch(push('/repeat'))
+                                            }}
+                                        >
                                             Повторить слова
                                         </button>
                                     </td>
@@ -116,8 +132,7 @@ export function Home() {
                                     <td></td>
                                     <td>
                                         <p className='category-desc'>
-                                            Слова для повторения появятся через
-                                            12 часов
+                                            {repeatTime}
                                         </p>
                                     </td>
                                 </tr>
