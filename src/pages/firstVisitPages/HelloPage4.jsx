@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux'
 import { finishFirstInit } from '../../redux/homeSlice'
-import { asyncGetWords } from '../../redux/learningSlice'
 import { changePageAnimation } from '../../utils'
 
 export function HelloPage4(props) {

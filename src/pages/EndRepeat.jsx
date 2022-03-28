@@ -13,7 +13,7 @@ export function EndRepeat() {
 
     useEffect(() => {
         getRepeatPhrase(state, setRepeatTime)
-    })
+    }, [state])
 
     return (
         <>

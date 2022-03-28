@@ -2,7 +2,7 @@ import { push } from 'connected-react-router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Header } from '../layout/Header'
-import { getRepeatPhrase, getRepeatTimeEnding } from '../utils'
+import { getRepeatPhrase } from '../utils'
 
 export function EndLearning() {
     const state = useSelector((state) => state.learning)
@@ -12,7 +12,7 @@ export function EndLearning() {
 
     useEffect(() => {
         getRepeatPhrase(state, setRepeatTime)
-    })
+    }, [state])
 
     const dispatch = useDispatch()
     return (
