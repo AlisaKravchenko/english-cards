@@ -1,3 +1,5 @@
+import Chart from 'chart.js' 
+
 export function changePageAnimation(){
     document
         .querySelector('[data-page="page"]')
@@ -7,14 +9,12 @@ export function changePageAnimation(){
         .classList.add('animate__fadeOutRight')
 }
 
-export function voiceText(text){
+export function voiceText(text, lang){
+    lang = lang ? lang : 'en-US'
     const utterance = new SpeechSynthesisUtterance(text)
-	utterance.lang = 'en-US'
+	utterance.lang = lang
 	utterance.rate = 1
 	speechSynthesis.speak(utterance)
-    setTimeout(() => {
-        speechSynthesis.cancel()
-    }, 100)
 }
 
 export function getWordsToLearn(state){
@@ -61,7 +61,7 @@ export function getWordsToLearn(state){
     return randWords
 }
 
-function getRandom(min, max) {
+export function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
@@ -94,19 +94,18 @@ export function getRepeatTimeEnding(state){
     return timeLearning
 }
 
-export function translateInput(translate, attempts) {
+export function translateInput(translateWord, attempts) {
     const input = document.querySelector('[data-type="input-translate"]')
     const translateField = document.querySelector(
         '[data-type="translate-field"]'
     )
-    console.log('a')
-    if (input.value.trim() === translate.current.trim()) {
+    if (input.value.trim() === translateWord.trim()) {
         input.style.background = '#9aeb9a' // green
         translateField.style.display = 'block'
-    } else if (translate.current.split(',').includes(input.value)) {
+    } else if (translateWord.split(',').includes(input.value)) {
         input.style.background = '#ffc81e' // yellow
         translateField.style.display = 'block'
-    } else if (input.value !== translate.current) {
+    } else if (input.value !== translateWord) {
         input.style.background = '#ff5422' // red
         setTimeout(() => {
             input.style.background = 'transparent'
@@ -129,7 +128,32 @@ export function translateInput(translate, attempts) {
     return attempts
 }
 
-export function getCardWordContent(currentCategory, currentWord, transcription, translate, examples, setAttempts, attempts){
+export function getCardWordContent(currentCategory, currentWord, transcription, translate, examples, setAttempts, attempts, firstShowLang, random ){
+    let firstShowWord = currentWord
+    let translateWord = translate.current
+    switch(firstShowLang){
+        case 'ru': 
+            firstShowWord = translate.current
+            translateWord = currentWord
+            break
+        case 'random': 
+        console.log(random);
+            if (random === 1){
+                firstShowWord = translate.current
+                translateWord = currentWord
+                firstShowLang = 'ru'
+
+            } else {
+                firstShowLang = 'en-US'
+                console.log('else');
+                voiceText(currentWord)
+            }
+            break
+        case 'en-US': 
+            voiceText(currentWord)
+            break
+        default: break
+    }
     return (
         <div>
             <p
@@ -140,16 +164,19 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
             >
                 Oxford, {currentCategory.slice(0, 2)}
             </p>
-            <h3>{currentWord}</h3>
+            
+            <div className='word-mic-section'>
+            <p className='word'>{firstShowWord.split(',').slice(0,1).join(',')}</p>
             <button
                 className='btn hear-btn'
                 onClick={() => {
-                    voiceText(currentWord)
+                    voiceText(firstShowWord, firstShowLang)
                 }}
             >
                 <span className='material-icons'>mic</span>
             </button>
-            <p className='ts'>{transcription.current}</p>
+            </div>
+            <p className='ts' style={{display: firstShowLang === 'en-US' ? 'block' : 'none'}}>{transcription.current}</p>
             <div className='repeat-sections'>
                 <div
                     className='repeat-buttons'
@@ -167,6 +194,10 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                             document.querySelector(
                                 '[data-type="translate-field"]'
                             ).style.display = 'block'
+                            if (firstShowLang === 'ru'){
+                                console.log('voice');
+                                voiceText(translateWord)
+                            }
                         }}
                     >
                         <span className='material-icons'>
@@ -209,7 +240,7 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                                 onClick={() => {
                                     setAttempts(
                                         translateInput(
-                                            translate,
+                                            translateWord,
                                             attempts
                                         )
                                     )
@@ -241,7 +272,8 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                         data-type='translate-field'
                     >
                         <p style={{ marginBottom: '1rem' }}>
-                            {translate.current}
+                            {translateWord.split(',')[0]}
+                            <span style={{color: 'grey'}}><span style={{display: translateWord.split(',').length > 1 ? 'inline-block' : 'none'}}>,</span>{translateWord.split(',').splice(1).join(', ')}</span>
                         </p>
                         {examples.current.length ? (
                             <ul className='examples'>
@@ -319,4 +351,117 @@ export function getRepeatPhrase(state, setRepeatTime){
     if (wordsCount) {
         setRepeatTime(`Слов для повтора: ${wordsCount}`)
     }
+}
+export function createLineChart(id, state, statisticsPeriod){
+    let labels = Array.from(
+        new Set([
+            ...Object.keys(state.learned),
+            ...Object.keys(state.repeated),
+            ...Object.keys(state.fullyLearned),
+        ])
+    )
+    switch(statisticsPeriod){
+        case 7: 
+            labels = changeLengthLabels(labels, 7)
+            break
+        case 30:
+            labels = changeLengthLabels(labels, 30)
+            break
+        default: break
+    }
+    let learnedData = Object.values(state.learned)
+    let repeatedData = Object.values(state.repeated)
+    let fullyLearnedData = Object.values(state.fullyLearned)
+    learnedData = changeLengthData(learnedData, labels)
+    repeatedData = changeLengthData(repeatedData, labels)
+    fullyLearnedData = changeLengthData(fullyLearnedData, labels)
+    const ctx = document.getElementById('statisticsChart').getContext('2d')
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Заучено новых слов',
+                    data: learnedData,
+                    backgroundColor: 'rgb(255,234,10,0.2)',
+                    borderColor: 'rgb(255,234,10,1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Повторено раз',
+                    data: repeatedData,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Полностью выучено',
+                    data: fullyLearnedData,
+                    backgroundColor: 'rgb(154,235,154,0.2)',
+                    borderColor: 'rgb(154,235,154,1)',
+                    borderWidth: 1,
+                },
+            ],
+        },
+        options: {
+            reverse: true,
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            stepSize: 5,
+                            min: 0,
+                            max: 50,
+                        },
+                        beginAtZero: true,
+                    },
+                ],
+                xAxes: {
+                    reverse: true,
+                }
+            },
+                
+        },
+    })
+    return {
+        currentPeriod: statisticsPeriod,
+        totalLearned: learnedData.reduce((total, item) => total + +item, 0),
+        totalRepeated: repeatedData.reduce((total, item) => total + +item, 0),
+        totalFullyLearned: fullyLearnedData.reduce((total, item) => total + +item, 0)
+    }
+}
+
+export function getTotalCountWords(){
+
+}
+
+function changeLengthData(data, labels){
+    if (data.length > labels.length){
+        data = data.slice(-labels.length)
+    }
+    if (data.length < labels.length){
+        const length = data.length
+        for (let i = 0; i < labels.length - length ; i++){
+            data.unshift(0)
+        }
+    }
+    return data
+}
+
+function changeLengthLabels(labels, length){
+    if (labels.length < length && labels.length){
+        const arr = labels[0].split('.')
+        const lastDate = new Date(arr[2], arr[1], arr[0])
+        lastDate.setDate(lastDate.getDate())
+        const labelsLength = labels.length
+        for (let i = 1; i < length - labelsLength + 1; i++){
+            const date = new Date(lastDate)
+            date.setDate(date.getDate() - i)
+            labels.unshift(`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`)
+        }
+    } else {
+        labels = labels.slice(-length)
+    }
+    return labels
 }

@@ -3,6 +3,7 @@ import { getRepeatTime } from "../utils";
 
 const initialState = {
     countLearnWords: '5',
+    firstShowLang: 'en-US',
     words: {},
     categories: [],
     repeat: {
@@ -17,8 +18,8 @@ const initialState = {
         // '86400000': [],
         // '604800000': [],
         // '5256000000': []
-        '10000': [],
-        '10001': [],
+        '1000': [],
+        '1001': [],
         // '1002': [],
         // '1000': [],
         // '14000': []
@@ -27,7 +28,7 @@ const initialState = {
         day: new Date().getDate(),
         count: 0,
     },
-    learnedWords: [],
+    fullyLearnedWords: [],
 }
 
 export const asyncGetWords = createAsyncThunk('GET_ASYNC_WORDS', async function() {
@@ -58,7 +59,7 @@ const learningSlice = createSlice({
                 const repeatTime = getRepeatTime(action.payload.repeatsCount, current(state))
                 state.repeat[repeatTime].push(action.payload)
             } else {
-                state.learnedWords.push(action.payload)
+                state.fullyLearnedWords.push(action.payload)
             }
         },
         deleteWordFromRepeat(state, action){
@@ -73,6 +74,9 @@ const learningSlice = createSlice({
                 day: new Date().getDate(),
                 count: 0
             }
+        },
+        setCountLearnWords(state, action){
+            state.countLearnWords = action.payload
         }
 
     },
@@ -84,4 +88,4 @@ const learningSlice = createSlice({
 })
 
 export default learningSlice.reducer
-export const {getCountLearnWords, addLearnedToday, setLearnedToday, deleteWord, deleteWordFromRepeat, addRepeatWord, addCategory, removeCategory} = learningSlice.actions
+export const {getCountLearnWords, setCountLearnWords, addLearnedToday, setLearnedToday, deleteWord, deleteWordFromRepeat, addRepeatWord, addCategory, removeCategory} = learningSlice.actions

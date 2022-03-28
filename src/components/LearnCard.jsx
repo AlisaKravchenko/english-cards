@@ -9,13 +9,14 @@ import {
     addRepeatWord,
     deleteWord,
 } from '../redux/learningSlice'
-import { getCardWordContent } from '../utils'
+import { addToStatistics } from '../redux/statisticsSlice'
+import { getCardWordContent, getRandom } from '../utils'
 
 export function LearnCard(props) {
     const { currentWordObj, nextCard } = props
     const currentCategory = Object.keys(currentWordObj)[0]
     const currentWord = currentWordObj[currentCategory]
-    const state = useSelector((state) => state)
+    const state = useSelector((state) => state.learning)
     const dispatch = useDispatch()
     const [countLocalLearned, setCountLocalLearned] = useState(0)
     let transcription = useRef('')
@@ -23,16 +24,18 @@ export function LearnCard(props) {
     let examples = useRef([])
     const [loading, setLoading] = useState(true)
     const [attempts, setAttempts] = useState('3 попытки')
+    const [random, setRandom] = useState(getRandom(1, 3))
 
     useEffect(() => {
-        const utterance = new SpeechSynthesisUtterance(currentWord)
         fetch(
             `https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${API_KEY_YANDEX}&lang=en-ru&text=${currentWord}`
         )
             .then((response) => response.json())
             .then((data) => {
                 try {
-                    transcription.current = '[' + data.def[0]['ts'] + ']'
+                    transcription.current = data.def[0]['ts']
+                        ? '[' + data.def[0]['ts'] + ']'
+                        : ''
                     const tr = []
                     data.def.forEach((el) => {
                         tr.push(el.tr[0].text.toString())
@@ -51,12 +54,8 @@ export function LearnCard(props) {
                             data.def[0].tr[0].ex[2].text) ||
                             '',
                     ]
-                    translate.current = tr.slice(0, 1).join(', ')
+                    translate.current = tr.slice(0, 3).join(', ')
                     setLoading(false)
-
-                    utterance.lang = 'en-US'
-                    utterance.rate = 1
-                    speechSynthesis.speak(utterance)
                 } catch (err) {
                     nextCard(true)
                 }
@@ -82,8 +81,8 @@ export function LearnCard(props) {
                         Назад
                     </button>
                     <p style={{ marginBottom: '0.3rem', marginTop: '1rem' }}>
-                        Выучено {countLocalLearned} из{' '}
-                        {state.learning.countLearnWords} слов
+                        Выучено {state.learnedToday.count} из{' '}
+                        {state.countLearnWords} слов
                     </p>
                     <div className='learn-block'>
                         {getCardWordContent(
@@ -93,8 +92,11 @@ export function LearnCard(props) {
                             translate,
                             examples,
                             setAttempts,
-                            attempts
+                            attempts,
+                            state.firstShowLang,
+                            random
                         )}
+                        {/* {callback()} */}
 
                         <div className='repeat-total'>
                             <button
@@ -124,6 +126,8 @@ export function LearnCard(props) {
                                         })
                                     )
                                     dispatch(addLearnedToday())
+                                    dispatch(addToStatistics('learned'))
+                                    setRandom(getRandom(1, 3))
                                 }}
                                 className='btn repeat-total-btn left-btn'
                             >
@@ -134,6 +138,7 @@ export function LearnCard(props) {
                                     setLoading(true)
                                     nextCard(false)
                                     setAttempts('3 попытки')
+                                    setRandom(getRandom(1, 3))
                                 }}
                                 className='btn repeat-total-btn right-btn'
                             >

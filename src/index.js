@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { createBrowserHistory } from 'history';
 import {  routerMiddleware, connectRouter } from 'connected-react-router';
 import learningSlice from './redux/learningSlice';
+import statisticsSlice from './redux/statisticsSlice';
 
 export const history = createBrowserHistory()
 
@@ -15,6 +16,7 @@ const store = configureStore({
   reducer: {
     home: homeSlice,
     learning: learningSlice,
+    statistics: statisticsSlice,
     router: connectRouter(history)
   },
   preloadedState: {
