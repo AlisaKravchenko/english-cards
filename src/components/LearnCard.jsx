@@ -7,6 +7,7 @@ import { Preloader } from '../layout/Preloader'
 import {
     addLearnedToday,
     addRepeatWord,
+    addToLearnedWords,
     deleteWord,
 } from '../redux/learningSlice'
 import { addToStatistics } from '../redux/statisticsSlice'
@@ -127,6 +128,15 @@ export function LearnCard(props) {
                                     )
                                     dispatch(addLearnedToday())
                                     dispatch(addToStatistics('learned'))
+                                    dispatch(
+                                        addToLearnedWords({
+                                            word: currentWord,
+                                            category: currentCategory.slice(
+                                                0,
+                                                2
+                                            ),
+                                        })
+                                    )
                                     setRandom(getRandom(1, 3))
                                 }}
                                 className='btn repeat-total-btn left-btn'

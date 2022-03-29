@@ -29,6 +29,9 @@ const initialState = {
         count: 0,
     },
     fullyLearnedWords: [],
+    repeatedWords: [],
+    learnedWords: [],
+
 }
 
 export const asyncGetWords = createAsyncThunk('GET_ASYNC_WORDS', async function() {
@@ -77,7 +80,19 @@ const learningSlice = createSlice({
         },
         setCountLearnWords(state, action){
             state.countLearnWords = action.payload
+        },
+        addToLearnedWords(state, action){
+            const wordObj = {word: action.payload.word, category: action.payload.category}
+            state.learnedWords.push(wordObj)
+            
+        },
+        addToRepeatedWords(state, action){
+            const wordObj = {word: action.payload.word, category: action.payload.category}
+            if (action.payload.repeatsCount === 0){
+                state.repeatedWords.push(wordObj)
+            }
         }
+
 
     },
     extraReducers: {
@@ -88,4 +103,4 @@ const learningSlice = createSlice({
 })
 
 export default learningSlice.reducer
-export const {getCountLearnWords, setCountLearnWords, addLearnedToday, setLearnedToday, deleteWord, deleteWordFromRepeat, addRepeatWord, addCategory, removeCategory} = learningSlice.actions
+export const {getCountLearnWords, setCountLearnWords, addToRepeatedWords, addToLearnedWords, addLearnedToday, setLearnedToday, deleteWord, deleteWordFromRepeat, addRepeatWord, addCategory, removeCategory} = learningSlice.actions
