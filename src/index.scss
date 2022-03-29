@@ -95,12 +95,21 @@ button {
     background-color: $base-color;
     .logo {
         margin: 0;
-        color: white;
-        font-weight: bold;
-        font-size: 1.7rem;
-        width: 12.5rem;
+        width: 16rem;
         display: block;
         margin: 0 auto;
+        p {
+            color: white;
+            font-weight: bold;
+            font-size: 1.7rem;
+            display: inline-block;
+        }
+        img {
+            margin-left: 0.5rem;
+            max-width: 3rem;
+            display: inline-block;
+            transform: translateY(-20%);
+        }
     }
     .nav-content {
         display: block;
@@ -506,5 +515,51 @@ button {
         margin-top: 1rem;
         text-transform: none;
         display: inline-block;
+    }
+}
+
+.glossary {
+    .categories {
+        margin-top: 1.5rem;
+        .category {
+            background-color: #fff;
+            border-radius: 15px;
+            margin-bottom: 0.5rem;
+            padding: 1rem;
+            p {
+                font-size: 1.3rem;
+                font-weight: bold;
+                margin-bottom: 0.3rem;
+            }
+            ul {
+                margin-left: 0.5rem;
+                li:last-child {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+    .accordion {
+        margin-top: 2rem;
+    }
+    .accordion-header {
+        margin: 0;
+        button {
+            font-family: 'Comfortaa', sans-serif;
+            background-color: #fff;
+        }
+    }
+    .accordion-body {
+        p {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        ul {
+            margin-left: 0.5rem;
+            li:last-child {
+                font-weight: bold;
+            }
+        }
     }
 }

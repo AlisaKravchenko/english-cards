@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { API_KEY_YANDEX } from '../config'
 import { Header } from '../layout/Header'
 import { Preloader } from '../layout/Preloader'
-import { addRepeatWord, deleteWordFromRepeat } from '../redux/learningSlice'
+import {
+    addRepeatWord,
+    addToRepeatedWords,
+    deleteWordFromRepeat,
+} from '../redux/learningSlice'
 import { addToStatistics, checkFullyLearned } from '../redux/statisticsSlice'
 import { getCardWordContent, getRandom } from '../utils'
 
@@ -131,6 +135,16 @@ export function RepeatCard(props) {
                                         })
                                     )
                                     setRandom(getRandom(1, 3))
+                                    dispatch(
+                                        addToRepeatedWords({
+                                            word: currentWord,
+                                            category: currentCategory.slice(
+                                                0,
+                                                2
+                                            ),
+                                            repeatsCount,
+                                        })
+                                    )
                                 }}
                                 className='btn repeat-total-btn left-btn'
                             >
