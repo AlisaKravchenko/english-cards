@@ -1,26 +1,25 @@
 import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { LearningSection } from '../components/LearningSection'
 import { StatisticsSection } from '../components/StatisticsSection'
-import { Header } from '../layout/Header'
+import { DARK_THEME_BACKGROUND, LIGHT_THEME_BACKGROUND } from '../constants'
 import { asyncGetWords } from '../redux/learningSlice'
 
 export function Home() {
+    const state = useSelector((state) => state.home)
     const dispatch = useDispatch()
 
     useEffect(() => {
-        document.body.style.background = '#edeef0'
+        document.body.style.background =
+            state.theme === 'light'
+                ? LIGHT_THEME_BACKGROUND
+                : DARK_THEME_BACKGROUND
         dispatch(asyncGetWords())
-    }, [dispatch])
+    }, [dispatch, state.theme])
     return (
         <>
-            <Header />
-            <main>
-                <div className='container'>
-                    <LearningSection />
-                    <StatisticsSection />
-                </div>
-            </main>
+            <LearningSection />
+            <StatisticsSection />
         </>
     )
 }

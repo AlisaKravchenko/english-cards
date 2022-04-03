@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
-import { createLineChart } from '../utils'
+import { createLineChart, getStatisticsBtnStyle } from '../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCountLearnWords } from '../redux/learningSlice'
 
 export function StatisticsSection() {
     const state = useSelector((state) => state)
     const [statisticsPeriod, setStatisticsPeriod] = useState(7)
-    const [chartHeight, setChartHeight] = useState('400')
     const [totalWords, setTotalWords] = useState({})
     const [countWords, setCountWords] = useState(state.learning.countLearnWords)
     const dispatch = useDispatch()
@@ -17,12 +16,7 @@ export function StatisticsSection() {
             statisticsPeriod
         )
         setTotalWords(total)
-        if (window.outerWidth < 992) {
-            setChartHeight('450')
-        } else {
-            setChartHeight('350')
-        }
-    }, [statisticsPeriod, chartHeight, state.statistics])
+    }, [statisticsPeriod, state.statistics])
     return (
         <div className='home statistics'>
             <p className='name-group'>Статистика</p>
@@ -90,7 +84,7 @@ export function StatisticsSection() {
                             <option value='80'>80</option>
                             <option value='90'>90</option>
                             <option value='100'>100</option>
-                            <option value='much'>&#8734;</option>
+                            {/* <option value='much'>&#8734;</option> */}
                         </select>
                         <button
                             className='btn'
@@ -111,12 +105,11 @@ export function StatisticsSection() {
                         <ul>
                             <li>
                                 <button
-                                    style={{
-                                        background:
-                                            statisticsPeriod === 7
-                                                ? 'white'
-                                                : 'transparent',
-                                    }}
+                                    style={getStatisticsBtnStyle(
+                                        statisticsPeriod,
+                                        7,
+                                        state
+                                    )}
                                     onClick={() => {
                                         setStatisticsPeriod(7)
                                     }}
@@ -127,12 +120,11 @@ export function StatisticsSection() {
                             </li>
                             <li>
                                 <button
-                                    style={{
-                                        background:
-                                            statisticsPeriod === 30
-                                                ? 'white'
-                                                : 'transparent',
-                                    }}
+                                    style={getStatisticsBtnStyle(
+                                        statisticsPeriod,
+                                        30,
+                                        state
+                                    )}
                                     onClick={() => {
                                         setStatisticsPeriod(30)
                                     }}
@@ -143,12 +135,11 @@ export function StatisticsSection() {
                             </li>
                             <li>
                                 <button
-                                    style={{
-                                        background:
-                                            statisticsPeriod === 'all'
-                                                ? 'white'
-                                                : 'transparent',
-                                    }}
+                                    style={getStatisticsBtnStyle(
+                                        statisticsPeriod,
+                                        'all',
+                                        state
+                                    )}
                                     onClick={() => {
                                         setStatisticsPeriod('all')
                                     }}
@@ -158,7 +149,7 @@ export function StatisticsSection() {
                             </li>
                         </ul>
                     </div>
-                    <canvas id='statisticsChart' height={chartHeight}></canvas>
+                    <canvas id='statisticsChart' height='300'></canvas>
                     <div className='statistics-total-words'>
                         <ul>
                             <li>

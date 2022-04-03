@@ -19,12 +19,6 @@ const store = configureStore({
     statistics: statisticsSlice,
     router: connectRouter(history)
   },
-  preloadedState: {
-    home: {
-      finishFirstInit: localStorage.getItem('first-visit') || false,
-    }
-    
-  },
   middleware: [...getDefaultMiddleware(), routerMiddleware(history)]
 })
 

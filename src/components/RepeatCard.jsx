@@ -2,7 +2,6 @@ import { push } from 'connected-react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { API_KEY_YANDEX } from '../config'
-import { Header } from '../layout/Header'
 import { Preloader } from '../layout/Preloader'
 import {
     addRepeatWord,
@@ -62,17 +61,19 @@ export function RepeatCard(props) {
                 }
             })
         return () => {
-            speechSynthesis.cancel()
+            if (!window.voiceTextInput) {
+                speechSynthesis.cancel()
+            }
+            window.voiceTextInput = false
         }
     })
 
     return (
         <>
-            <Header />
             {loading ? (
                 <Preloader />
             ) : (
-                <div className='container'>
+                <div>
                     <button
                         className='btn back-btn'
                         onClick={() => {
@@ -99,7 +100,9 @@ export function RepeatCard(props) {
                             setAttempts,
                             attempts,
                             state.firstShowLang,
-                            random
+                            random,
+                            state.showTranscription,
+                            state.voiceEnWord
                         )}
                         <div className='repeat-total'>
                             <button

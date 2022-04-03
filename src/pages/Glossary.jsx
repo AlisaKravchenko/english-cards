@@ -1,12 +1,10 @@
 import { useSelector } from 'react-redux'
-import { Header } from '../layout/Header'
 
 export function Glossary() {
     const state = useSelector((state) => state)
     return (
         <>
-            <Header />
-            <div className='container glossary'>
+            <div className='glossary'>
                 {/* <p>
                     Важно! Лучше не смотреть повторенные и заученные слова в
                     интервалах между повторами, так как для этого и созданы сами

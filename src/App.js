@@ -10,6 +10,8 @@ import { Glossary } from './pages/Glossary';
 import { Categories } from './pages/Categories';
 import { Repeat } from './pages/Repeat';
 import { Learn } from './pages/Learn';
+import { Settings } from './pages/Settings';
+import { Header } from './layout/Header';
 
 export function App(props) {
   const store = useStore()
@@ -25,15 +27,19 @@ export function App(props) {
   
   return (
     <ConnectedRouter history={history} >
-       <div className="App">
-         <Switch>
-          <Route exact path='/' component={HelloPages} />
-          <Route exact path='/home' component={Home} />
-          <Route exact path='/learning' component={Learn} />
-          <Route exact path='/glossary' component={Glossary} />
-          <Route exact path='/categories' component={Categories} />
-          <Route exact path='/repeat' component={Repeat} />
-         </Switch>
+       <div className="App">   
+       <Header />
+         <main className='container'>
+            <Switch>
+            <Route exact path='/' component={HelloPages} />
+            <Route exact path='/home' component={Home} />
+            <Route exact path='/learning' component={Learn} />
+            <Route exact path='/glossary' component={Glossary} />
+            <Route exact path='/categories' component={Categories} />
+            <Route exact path='/repeat' component={Repeat} />
+            <Route exact path='/settings' component={Settings} />
+            </Switch>
+        </main>
      </div>
     </ConnectedRouter>
     

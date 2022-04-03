@@ -1,7 +1,6 @@
 import { push } from 'connected-react-router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Header } from '../layout/Header'
 import { getRepeatPhrase } from '../utils'
 
 export function EndLearning() {
@@ -17,8 +16,7 @@ export function EndLearning() {
     const dispatch = useDispatch()
     return (
         <>
-            <Header />
-            <div className='container'>
+            <div>
                 <div className='end-block learn-block'>
                     <h4>Вы выполнили свою цель на сегодня!</h4>
                     <img

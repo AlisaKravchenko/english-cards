@@ -2,7 +2,6 @@ import { push } from 'connected-react-router'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Category } from '../components/Category'
-import { Header } from '../layout/Header'
 import { Preloader } from '../layout/Preloader'
 
 export function Categories() {
@@ -27,9 +26,8 @@ export function Categories() {
     }, [])
     return (
         <>
-            <Header />
             {!loading ? (
-                <div className='container'>
+                <div>
                     <button
                         className='btn back-btn'
                         onClick={() => {
