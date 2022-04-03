@@ -238,6 +238,66 @@ export function Settings() {
                             </label>
                         </div>
                     </div>
+                    <p className='name-group'>ПРОЧЕЕ</p>
+                    <div
+                        className='accordion'
+                        id='accordionPanelsStayOpenExample'
+                    >
+                        <div className='accordion-item'>
+                            <h2
+                                className='accordion-header'
+                                id='panelsStayOpen-headingOne'
+                                style={{ marginTop: 0 }}
+                            >
+                                <button
+                                    style={{
+                                        fontSize: '1.2rem',
+                                        padding: '1.5rem',
+                                        background: 'transparent',
+                                    }}
+                                    className='accordion-button collapsed'
+                                    type='button'
+                                    data-bs-toggle='collapse'
+                                    data-bs-target='#panelsStayOpen-collapseOne'
+                                    aria-expanded='false'
+                                    aria-controls='panelsStayOpen-collapseOne'
+                                >
+                                    О приложении
+                                </button>
+                            </h2>
+                            <div
+                                id='panelsStayOpen-collapseOne'
+                                className='accordion-collapse collapse'
+                                aria-labelledby='panelsStayOpen-headingOne'
+                            >
+                                <div className='accordion-body'>
+                                    <p>
+                                        Приложение помогает эффективно
+                                        запоминать английские слова.
+                                    </p>
+                                    <p>
+                                        Изучение слов происходит по методике,
+                                        основанной на кривой забывания
+                                        Эббингауза. Новое слово заучивается и
+                                        затем повторяется через определенные
+                                        промежутки времени.
+                                    </p>
+                                    <p>
+                                        Используйте приложение по возможности
+                                        2-3 раза в день с интервалом в несколько
+                                        часов.
+                                    </p>
+                                    <p>
+                                        Перевод слов реализован с помощью
+                                        сервиса{' '}
+                                        <a href='https://yandex.ru/dev/dictionary/'>
+                                            API Яндекс. Словарь
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>
