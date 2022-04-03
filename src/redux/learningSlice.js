@@ -3,7 +3,7 @@ import { getRepeatTime } from "../utils";
 
 const initialState = {
     countLearnWords: '5',
-    firstShowLang: 'en-US',
+    firstShowLang: 'ru',
     words: {},
     categories: [],
     repeat: {
@@ -31,6 +31,8 @@ const initialState = {
     fullyLearnedWords: [],
     repeatedWords: [],
     learnedWords: [],
+    showTranscription: true,
+    voiceEnWord: true
 
 }
 
@@ -91,6 +93,15 @@ const learningSlice = createSlice({
             if (action.payload.repeatsCount === 0){
                 state.repeatedWords.push(wordObj)
             }
+        },
+        changeFirstShowLang(state, action){
+            state.firstShowLang = action.payload
+        },
+        setShowTranscription(state, action){
+            state.showTranscription = action.payload
+        },
+        setVoiceEnWord(state, action){
+            state.voiceEnWord = action.payload
         }
 
 
@@ -103,4 +114,4 @@ const learningSlice = createSlice({
 })
 
 export default learningSlice.reducer
-export const {getCountLearnWords, setCountLearnWords, addToRepeatedWords, addToLearnedWords, addLearnedToday, setLearnedToday, deleteWord, deleteWordFromRepeat, addRepeatWord, addCategory, removeCategory} = learningSlice.actions
+export const {getCountLearnWords, setCountLearnWords, changeFirstShowLang,setVoiceEnWord,setShowTranscription,addToRepeatedWords, addToLearnedWords, addLearnedToday, setLearnedToday, deleteWord, deleteWordFromRepeat, addRepeatWord, addCategory, removeCategory} = learningSlice.actions

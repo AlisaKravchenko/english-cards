@@ -20,6 +20,10 @@ button {
     }
 }
 
+main {
+    min-height: calc(100vh - 125.69px - 2rem);
+}
+
 .hellow-page {
     display: block;
     color: white;
@@ -135,48 +139,58 @@ button {
         color: #cecece;
     }
 }
-
-.home {
-    .name-group {
-        text-transform: uppercase;
-        color: grey;
-        font-weight: 400;
-        margin: 0;
-        margin-top: 2rem;
-        margin-bottom: 0.3rem;
+.name-group {
+    text-transform: uppercase;
+    color: grey;
+    font-weight: 400;
+    margin: 0;
+    margin-top: 2rem;
+    margin-bottom: 0.3rem;
+}
+.categories {
+    .category {
+        background-color: white;
+        border-radius: 15px;
+        padding: 0.5rem 0.7rem;
+        margin-bottom: 0.6rem;
+        button,
+        button:hover {
+            padding: 0;
+            color: black;
+            background: transparent;
+            bottom: none;
+            outline: none;
+            box-shadow: none;
+            margin: 0;
+            font-size: 1.2rem;
+            font-family: 'Comfortaa', sans-serif;
+            text-transform: none;
+        }
+        button:hover {
+            color: lighten($color: #000000, $amount: 30%);
+        }
+        table {
+            tr,
+            td {
+                border: none;
+                padding: 0;
+            }
+        }
+        .td-icon {
+            width: 2.5rem;
+        }
+        .category-desc {
+            color: #8a8a8a;
+        }
+        p {
+            margin: 0;
+            padding: 0;
+        }
     }
+}
+.home {
     .categories {
         .category {
-            background-color: white;
-            border-radius: 15px;
-            padding: 0.5rem 0.7rem;
-            margin-bottom: 0.6rem;
-            button,
-            button:hover {
-                padding: 0;
-                color: black;
-                background: transparent;
-                bottom: none;
-                outline: none;
-                box-shadow: none;
-                margin: 0;
-                font-size: 1.2rem;
-                font-family: 'Comfortaa', sans-serif;
-                text-transform: none;
-            }
-            button:hover {
-                color: lighten($color: #000000, $amount: 30%);
-            }
-            table {
-                tr,
-                td {
-                    border: none;
-                    padding: 0;
-                }
-            }
-            .td-icon {
-                width: 2.5rem;
-            }
             #icon-add {
                 color: #ff5854;
             }
@@ -186,18 +200,15 @@ button {
             #icon-categories {
                 color: grey;
             }
-            .category-desc {
-                color: #8a8a8a;
-            }
-            p {
-                margin: 0;
-                padding: 0;
-            }
         }
     }
 }
 
 @media (min-width: 992px) {
+    main {
+        min-height: calc(100vh - 77px - 2rem);
+    }
+
     .header {
         .logo {
             position: absolute;
@@ -433,6 +444,7 @@ button {
 }
 
 .statistics {
+    margin-bottom: 2rem;
     .learned-today {
         font-size: 1.2rem;
     }
@@ -492,7 +504,7 @@ button {
     position: absolute;
     right: 0rem;
     top: 0;
-    color: grey;
+    color: #00897b;
 }
 .popup-count-words {
     display: flex;
@@ -560,6 +572,36 @@ button {
             li:last-child {
                 font-weight: bold;
             }
+        }
+    }
+}
+
+.settings {
+    .edit-icon {
+        margin-left: 0.1rem;
+        transform: translateY(20%);
+    }
+    .categories {
+        .category {
+            padding: 1.3rem 1rem;
+            .switch-p {
+                display: inline-block;
+            }
+            p {
+                font-size: 1.15rem;
+            }
+        }
+    }
+    button {
+        border: none;
+        span {
+            color: blue;
+        }
+    }
+    .switch {
+        display: inline-block;
+        span {
+            margin-left: 0.6rem;
         }
     }
 }

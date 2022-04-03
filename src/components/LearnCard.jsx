@@ -2,7 +2,6 @@ import { push } from 'connected-react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { API_KEY_YANDEX } from '../config'
-import { Header } from '../layout/Header'
 import { Preloader } from '../layout/Preloader'
 import {
     addLearnedToday,
@@ -13,6 +12,7 @@ import {
 import { addToStatistics } from '../redux/statisticsSlice'
 import { getCardWordContent, getRandom } from '../utils'
 
+window.voiceTextInput = false
 export function LearnCard(props) {
     const { currentWordObj, nextCard } = props
     const currentCategory = Object.keys(currentWordObj)[0]
@@ -62,17 +62,19 @@ export function LearnCard(props) {
                 }
             })
         return () => {
-            speechSynthesis.cancel()
+            if (!window.voiceTextInput) {
+                speechSynthesis.cancel()
+            }
+            window.voiceTextInput = false
         }
     })
 
     return (
         <>
-            <Header />
             {loading ? (
                 <Preloader />
             ) : (
-                <div className='container' data-word={currentWord}>
+                <div>
                     <button
                         className='btn back-btn'
                         onClick={() => {
@@ -95,9 +97,10 @@ export function LearnCard(props) {
                             setAttempts,
                             attempts,
                             state.firstShowLang,
-                            random
+                            random,
+                            state.showTranscription,
+                            state.voiceEnWord
                         )}
-                        {/* {callback()} */}
 
                         <div className='repeat-total'>
                             <button

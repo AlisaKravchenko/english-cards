@@ -1,4 +1,6 @@
 import Chart from 'chart.js' 
+import { DARK_THEME_BACKGROUND, LIGHT_THEME_BACKGROUND } from './constants'
+import { darkStyles } from './darkTheme'
 
 export function changePageAnimation(){
     document
@@ -9,12 +11,14 @@ export function changePageAnimation(){
         .classList.add('animate__fadeOutRight')
 }
 
-export function voiceText(text, lang){
-    lang = lang ? lang : 'en-US'
-    const utterance = new SpeechSynthesisUtterance(text)
-	utterance.lang = lang
-	utterance.rate = 1
-	speechSynthesis.speak(utterance)
+export function voiceText(voiceEnWord, text, lang){
+    if (voiceEnWord){
+        lang = lang ? lang : 'en-US'
+        const utterance = new SpeechSynthesisUtterance(text)
+	    utterance.lang = lang
+	    utterance.rate = 1
+	    speechSynthesis.speak(utterance) 
+    }
 }
 
 export function getWordsToLearn(state){
@@ -38,7 +42,6 @@ export function getWordsToLearn(state){
     // randCategories = ['A2', 'A2' ]
 
     randCategories.forEach((el, i) => {
-        // console.log(wordsWithCategories);
             const word = wordsWithCategories[el][getRandom(0, wordsWithCategories[el].length)] || ''
             wordsWithCategories[el] = wordsWithCategories[el].filter(el => el !== word)
             if (word) {
@@ -94,7 +97,8 @@ export function getRepeatTimeEnding(state){
     return timeLearning
 }
 
-export function translateInput(translateWord, attempts) {
+
+export function translateInput(translateWord, attempts, firstShowLang, voiceEnWord) {
     const input = document.querySelector('[data-type="input-translate"]')
     const translateField = document.querySelector(
         '[data-type="translate-field"]'
@@ -115,11 +119,15 @@ export function translateInput(translateWord, attempts) {
                 attempts = attempts.slice(0, 1) - 1 + ' попытки'
                 break
             case 2:
-                attempts = attempts.slice(0, 1) - 1 + ' попытки'
+                attempts = attempts.slice(0, 1) - 1 + ' попытка'
                 break
             case 1:
                 attempts = attempts.slice(0, 1) - 1 + ' попытка'
                 translateField.style.display = 'block'
+                if (firstShowLang === 'ru'){
+                    voiceText(voiceEnWord, translateWord)
+                    window.voiceTextInput = true
+                }
                 break
             default:
                 break
@@ -128,7 +136,8 @@ export function translateInput(translateWord, attempts) {
     return attempts
 }
 
-export function getCardWordContent(currentCategory, currentWord, transcription, translate, examples, setAttempts, attempts, firstShowLang, random ){
+export function getCardWordContent(currentCategory, currentWord, transcription, translate, examples, setAttempts, attempts, firstShowLang, random, showTranscription, voiceEnWord ){
+    currentWord = currentWord.split(',').slice(0,3).join(',')
     let firstShowWord = currentWord
     let translateWord = translate.current
     switch(firstShowLang){
@@ -137,7 +146,6 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
             translateWord = currentWord
             break
         case 'random': 
-        console.log(random);
             if (random === 1){
                 firstShowWord = translate.current
                 translateWord = currentWord
@@ -145,12 +153,11 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
 
             } else {
                 firstShowLang = 'en-US'
-                console.log('else');
-                voiceText(currentWord)
+                voiceText(voiceEnWord, currentWord.split(',').slice(0,1).join(','))
             }
             break
         case 'en-US': 
-            voiceText(currentWord)
+            voiceText(voiceEnWord, currentWord.split(',').slice(0,1).join(','))
             break
         default: break
     }
@@ -170,13 +177,13 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
             <button
                 className='btn hear-btn'
                 onClick={() => {
-                    voiceText(firstShowWord, firstShowLang)
+                    voiceText(true, firstShowWord.split(',').slice(0,1).join(','), firstShowLang)
                 }}
             >
                 <span className='material-icons'>mic</span>
             </button>
             </div>
-            <p className='ts' style={{display: firstShowLang === 'en-US' ? 'block' : 'none'}}>{transcription.current}</p>
+            <p className='ts' style={{display: firstShowLang === 'en-US' && showTranscription ? 'block' : 'none'}}>{transcription.current}</p>
             <div className='repeat-sections'>
                 <div
                     className='repeat-buttons'
@@ -195,8 +202,7 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                                 '[data-type="translate-field"]'
                             ).style.display = 'block'
                             if (firstShowLang === 'ru'){
-                                console.log('voice');
-                                voiceText(translateWord)
+                                voiceText(voiceEnWord, translateWord)
                             }
                         }}
                     >
@@ -241,7 +247,9 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                                     setAttempts(
                                         translateInput(
                                             translateWord,
-                                            attempts
+                                            attempts,
+                                            firstShowLang, 
+                                            voiceEnWord
                                         )
                                     )
                                 }}
@@ -406,6 +414,8 @@ export function createLineChart(id, state, statisticsPeriod){
         },
         options: {
             reverse: true,
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 yAxes: [
                     {
@@ -464,4 +474,35 @@ function changeLengthLabels(labels, length){
         labels = labels.slice(-length)
     }
     return labels
+}
+
+export function changeTheme(theme){
+    if (theme === 'dark') {
+        const style = document.createElement('style')
+        document.head.appendChild(style)
+        style.innerHTML = darkStyles
+        style.dataset.type = 'style-theme'
+        // document.querySelector('.repeat-btn').style.background = '#212425'
+    } else {
+        const style = document.querySelector('[data-type="style-theme"]')
+        if (style) {
+            style.innerHTML = ''
+            style.remove()
+        }
+    }
+    document.body.style.background =
+        theme === 'dark' ? DARK_THEME_BACKGROUND : LIGHT_THEME_BACKGROUND
+}
+export function getStatisticsBtnStyle(statisticsPeriod, value, state){
+    return {
+        background:
+            statisticsPeriod === value
+                ? state.home.theme === 'dark' ? '#bab7b2' : 'white'
+                : 'transparent',
+        color:
+            statisticsPeriod === value &&
+            state.home.theme === 'dark'
+                ? 'black'
+                : 'inherit',
+    }
 }
