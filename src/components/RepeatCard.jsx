@@ -19,12 +19,13 @@ export function RepeatCard(props) {
     const currentWord = currentWordObj.word
     const dispatch = useDispatch()
     const [countLocalLearned, setCountLocalLearned] = useState(0)
-    let transcription = useRef('')
-    let translate = useRef('')
-    let examples = useRef([])
     const [attempts, setAttempts] = useState('3 попытки')
     const [loading, setLoading] = useState(true)
     const [random, setRandom] = useState(getRandom(1, 3))
+    const [forgotWords, setForgotWords] = useState([])
+    let transcription = useRef('')
+    let translate = useRef('')
+    let examples = useRef([])
 
     useEffect(() => {
         fetch(
@@ -65,6 +66,11 @@ export function RepeatCard(props) {
                 speechSynthesis.cancel()
             }
             window.voiceTextInput = false
+            // setCountLocalLearned(0)
+            // setAttempts('3 попытки')
+            // setLoading(true)
+            // setRandom(getRandom(1, 3))
+            // setForgotWords([])
         }
     })
 
@@ -125,7 +131,15 @@ export function RepeatCard(props) {
                                                 2
                                             ),
                                             time: Date.now(),
-                                            repeatsCount: repeatsCount + 1,
+                                            repeatsCount:
+                                                repeatsCount +
+                                                (forgotWords.includes(
+                                                    currentWord
+                                                )
+                                                    ? repeatsCount === 0
+                                                        ? +0
+                                                        : -1
+                                                    : +1),
                                         })
                                     )
                                     dispatch(addToStatistics('repeated'))
@@ -159,6 +173,10 @@ export function RepeatCard(props) {
                                     nextCard(false)
                                     setAttempts('3 попытки')
                                     setRandom(getRandom(1, 3))
+                                    setForgotWords([
+                                        ...forgotWords,
+                                        currentWord,
+                                    ])
                                 }}
                                 className='btn repeat-total-btn right-btn'
                             >

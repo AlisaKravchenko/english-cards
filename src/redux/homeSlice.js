@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { changeTheme } from "../utils";
 
 
-const initialState = {
+const initialState = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).home : {
     finishFirstInit: localStorage.getItem('first-visit') || false,
     theme: 'light',
 }

@@ -20,12 +20,12 @@ export function LearnCard(props) {
     const state = useSelector((state) => state.learning)
     const dispatch = useDispatch()
     const [countLocalLearned, setCountLocalLearned] = useState(0)
-    let transcription = useRef('')
-    let translate = useRef('')
-    let examples = useRef([])
     const [loading, setLoading] = useState(true)
     const [attempts, setAttempts] = useState('3 попытки')
     const [random, setRandom] = useState(getRandom(1, 3))
+    let transcription = useRef('')
+    let translate = useRef('')
+    let examples = useRef([])
 
     useEffect(() => {
         fetch(
@@ -55,17 +55,23 @@ export function LearnCard(props) {
                             data.def[0].tr[0].ex[2].text) ||
                             '',
                     ]
-                    translate.current = tr.slice(0, 3).join(', ')
+                    translate.current = tr.join(', ')
                     setLoading(false)
                 } catch (err) {
                     nextCard(true)
+                    console.error(err.message)
                 }
             })
+
         return () => {
             if (!window.voiceTextInput) {
                 speechSynthesis.cancel()
             }
             window.voiceTextInput = false
+            // setCountLocalLearned(0)
+            // setAttempts('3 попытки')
+            // setLoading(true)
+            // setRandom(getRandom(1, 3))
         }
     })
 

@@ -1,17 +1,12 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { allWords } from "../allWords";
 import { getRepeatTime } from "../utils";
-
-const initialState = {
+const initialState = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).learning :  {
     countLearnWords: '5',
     firstShowLang: 'ru',
-    words: {},
+    words: allWords,
     categories: [],
     repeat: {
-        // '30min': [],
-        // '9hours': [],
-        // '24hours': [],
-        // '1week': [],
-        // '2months': []
         // '1800000': [],
         // '7200000': [],
         // '43200000': [],
@@ -20,12 +15,9 @@ const initialState = {
         // '5256000000': []
         '1000': [],
         '1001': [],
-        // '1002': [],
-        // '1000': [],
-        // '14000': []
     },
     learnedToday: {
-        day: new Date().getDate(),
+        day: null,
         count: 0,
     },
     fullyLearnedWords: [],
@@ -36,11 +28,11 @@ const initialState = {
 
 }
 
-export const asyncGetWords = createAsyncThunk('GET_ASYNC_WORDS', async function() {
-    const response = await fetch('https://english-words-api.vercel.app/')
-    const data = await response.json()
-    return data
-})
+// export const asyncGetWords = createAsyncThunk('GET_ASYNC_WORDS', async function() {
+//     const response = await fetch('https://english-words-api.vercel.app/')
+//     const data = await response.json()
+//     return data
+// })
 const learningSlice = createSlice({
     name: 'learning',
     initialState,
@@ -61,7 +53,7 @@ const learningSlice = createSlice({
         },
         addRepeatWord(state, action){
             if (action.payload.repeatsCount < Object.keys(initialState.repeat).length){
-                const repeatTime = getRepeatTime(action.payload.repeatsCount, current(state))
+                let repeatTime = getRepeatTime(action.payload.repeatsCount, current(state))
                 state.repeat[repeatTime].push(action.payload)
             } else {
                 state.fullyLearnedWords.push(action.payload)
@@ -106,11 +98,11 @@ const learningSlice = createSlice({
 
 
     },
-    extraReducers: {
-        [asyncGetWords.fulfilled]: (state, action) => {
-            state.words = action.payload
-        }
-    }
+    // extraReducers: {
+    //     [asyncGetWords.fulfilled]: (state, action) => {
+    //         state.words = action.payload
+    //     }
+    // }
 })
 
 export default learningSlice.reducer

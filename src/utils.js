@@ -18,6 +18,7 @@ export function voiceText(voiceEnWord, text, lang){
 	    utterance.lang = lang
 	    utterance.rate = 1
 	    speechSynthesis.speak(utterance) 
+        console.log('voice');
     }
 }
 
@@ -83,15 +84,22 @@ export function getRepeatTimeEnding(state){
     let timeLearning = 0
     for (let key in state.repeat) {
         if (state.repeat[key].length) {
-            if (+key >= 7200000) {
-                timeLearning = Math.floor(key / 3600000) + ' час(ов/а)'
-            } else if (+key >= 3600000) {
-                timeLearning = '1 час'
-            } else if (+key >= 300000) {
-                timeLearning = Math.floor(key / 60000) + ' минут(ы)'
-            } else {
-                timeLearning = 'несколько минут'
+            let flag = 0
+            if (state.repeat[key][0] && flag === 0){
+                flag = 1
+                const interval = key - Date.now() + state.repeat[key][0].time
+                if (+key >= 604800000){
+                    timeLearning = Math.round(interval / 604800000) + ' нед.'
+                } else if (+key >= 86400000){
+                    timeLearning = Math.round(interval / 86400000) + ' дн.'
+                } else if (+key >= 7200000) {
+                    timeLearning = Math.round(interval / 3600000) + ' ч.'
+                } else{
+                    timeLearning = Math.round(interval / 60000) + ' мин.'
+                }
             }
+                
+            
         }
     }
     return timeLearning
@@ -106,9 +114,17 @@ export function translateInput(translateWord, attempts, firstShowLang, voiceEnWo
     if (input.value.trim() === translateWord.trim()) {
         input.style.background = '#9aeb9a' // green
         translateField.style.display = 'block'
+        if (firstShowLang === 'ru'){
+            voiceText(voiceEnWord, translateWord)
+            window.voiceTextInput = true
+        }
     } else if (translateWord.split(',').includes(input.value)) {
         input.style.background = '#ffc81e' // yellow
         translateField.style.display = 'block'
+        if (firstShowLang === 'ru'){
+            voiceText(voiceEnWord, translateWord)
+            window.voiceTextInput = true
+        }
     } else if (input.value !== translateWord) {
         input.style.background = '#ff5422' // red
         setTimeout(() => {
@@ -137,7 +153,8 @@ export function translateInput(translateWord, attempts, firstShowLang, voiceEnWo
 }
 
 export function getCardWordContent(currentCategory, currentWord, transcription, translate, examples, setAttempts, attempts, firstShowLang, random, showTranscription, voiceEnWord ){
-    currentWord = currentWord.split(',').slice(0,3).join(',')
+    const synonymsCount = 2
+    currentWord = currentWord.split(',').slice(0,synonymsCount).join(',')
     let firstShowWord = currentWord
     let translateWord = translate.current
     switch(firstShowLang){
@@ -153,11 +170,14 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
 
             } else {
                 firstShowLang = 'en-US'
-                voiceText(voiceEnWord, currentWord.split(',').slice(0,1).join(','))
+                voiceText(voiceEnWord, currentWord)
             }
             break
         case 'en-US': 
-            voiceText(voiceEnWord, currentWord.split(',').slice(0,1).join(','))
+         if (+attempts.slice(0,1) === 0){
+            voiceText(voiceEnWord, currentWord)
+         }
+            
             break
         default: break
     }
@@ -173,11 +193,11 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
             </p>
             
             <div className='word-mic-section'>
-            <p className='word'>{firstShowWord.split(',').slice(0,1).join(',')}</p>
+            <p className='word'>{firstShowWord.split(',').slice(0, synonymsCount).join(',')}</p>
             <button
                 className='btn hear-btn'
                 onClick={() => {
-                    voiceText(true, firstShowWord.split(',').slice(0,1).join(','), firstShowLang)
+                    voiceText(true, firstShowWord.split(',').slice(0, synonymsCount).join(','), firstShowLang)
                 }}
             >
                 <span className='material-icons'>mic</span>
@@ -279,10 +299,12 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                         className='repeat-section'
                         data-type='translate-field'
                     >
-                        <p style={{ marginBottom: '1rem' }}>
+                        <p >
                             {translateWord.split(',')[0]}
-                            <span style={{color: 'grey'}}><span style={{display: translateWord.split(',').length > 1 ? 'inline-block' : 'none'}}>,</span>{translateWord.split(',').splice(1).join(', ')}</span>
+                            <span style={{color: 'grey'}}><span style={{display: translateWord.split(',').length > 1 ? 'inline-block' : 'none'}}>,</span>{translateWord.split(',').splice(1, synonymsCount - 1).join(', ')}</span>
+                            <span className='ts' style={{display: firstShowLang === 'ru' && showTranscription ? 'block' : 'none'}}>{transcription.current}</span>
                         </p>
+                        
                         {examples.current.length ? (
                             <ul className='examples'>
                                 {examples.current.map(
@@ -415,14 +437,15 @@ export function createLineChart(id, state, statisticsPeriod){
         options: {
             reverse: true,
             responsive: true,
-            maintainAspectRatio: false,
+            // maintainAspectRatio: false,
             scales: {
                 yAxes: [
                     {
+                        
                         ticks: {
                             stepSize: 5,
                             min: 0,
-                            max: 50,
+                            max: getMaxYChart([...learnedData, ...repeatedData,...fullyLearnedData]),
                         },
                         beginAtZero: true,
                     },
@@ -442,9 +465,6 @@ export function createLineChart(id, state, statisticsPeriod){
     }
 }
 
-export function getTotalCountWords(){
-
-}
 
 function changeLengthData(data, labels){
     if (data.length > labels.length){
@@ -458,6 +478,16 @@ function changeLengthData(data, labels){
     }
     return data
 }
+function getMaxYChart(data){
+    let max = 0
+    data.forEach(el => {
+        if (el > max){
+            max = el
+        }
+    })
+    max = Math.ceil(max/5)*5 + 5;
+    return max > 50 ? max : 50
+}
 
 function changeLengthLabels(labels, length){
     if (labels.length < length && labels.length){
@@ -468,7 +498,7 @@ function changeLengthLabels(labels, length){
         for (let i = 1; i < length - labelsLength + 1; i++){
             const date = new Date(lastDate)
             date.setDate(date.getDate() - i)
-            labels.unshift(`${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`)
+            labels.unshift(`${('0' + date.getDate()).slice(-2)}.${('0' + date.getMonth()).slice(-2)}.${date.getFullYear()}`)
         }
     } else {
         labels = labels.slice(-length)
@@ -482,7 +512,6 @@ export function changeTheme(theme){
         document.head.appendChild(style)
         style.innerHTML = darkStyles
         style.dataset.type = 'style-theme'
-        // document.querySelector('.repeat-btn').style.background = '#212425'
     } else {
         const style = document.querySelector('[data-type="style-theme"]')
         if (style) {

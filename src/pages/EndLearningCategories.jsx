@@ -16,7 +16,7 @@ export function EndLearningCategories() {
                 />
                 <p>Выберите другие категории, чтобы выучить еще больше слов!</p>
                 <button
-                    className='btn'
+                    className='btn back-btn'
                     onClick={() => {
                         dispatch(push('/home'))
                     }}

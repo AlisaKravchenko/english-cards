@@ -2,6 +2,7 @@ import { push } from 'connected-react-router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLearnedToday } from '../redux/learningSlice'
+import { addDayToStatictics } from '../redux/statisticsSlice'
 import { getRepeatPhrase } from '../utils'
 
 export function LearningSection() {
@@ -14,6 +15,7 @@ export function LearningSection() {
         getRepeatPhrase(state, setRepeatTime)
         if (new Date().getDate() !== state.learnedToday.day) {
             dispatch(setLearnedToday())
+            dispatch(addDayToStatictics())
         }
     }, [dispatch, state])
     return (
@@ -72,9 +74,12 @@ export function LearningSection() {
                                                         })
                                                     )
                                                 } else {
-                                                    alert(
-                                                        'Выберите хотя бы одну категорию!'
-                                                    )
+                                                    const popup =
+                                                        document.querySelector(
+                                                            '[data-type="popupCategories"]'
+                                                        )
+                                                    popup.style.display =
+                                                        'block'
                                                 }
                                             }}
                                         >
@@ -95,6 +100,35 @@ export function LearningSection() {
                             </tbody>
                         </table>
                     </div>
+
+                    <div className='popup-wrap' data-type='popupCategories'>
+                        <div className='popup-count-words'>
+                            <div
+                                className='popup-close'
+                                onClick={() => {
+                                    const popup = document.querySelector(
+                                        '[data-type="popupCategories"]'
+                                    )
+                                    popup.style.display = 'none'
+                                }}
+                            >
+                                <span className='material-icons'>close</span>
+                            </div>
+                            <p>Выберите хотя бы одну категорию!</p>
+                            <button
+                                className='btn'
+                                onClick={() => {
+                                    const popup = document.querySelector(
+                                        '[data-type="popupCategories"]'
+                                    )
+                                    popup.style.display = 'none'
+                                }}
+                            >
+                                Хорошо
+                            </button>
+                        </div>
+                    </div>
+
                     <div className='category'>
                         <table>
                             <tbody>
