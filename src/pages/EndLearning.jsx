@@ -31,7 +31,7 @@ export function EndLearning() {
                         от 30 минут до 2 месяцев.
                     </p>
                     <button
-                        className='btn'
+                        className='btn back-btn'
                         onClick={() => {
                             dispatch(push('/home'))
                         }}

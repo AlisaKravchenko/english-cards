@@ -9,7 +9,7 @@ export function HelloPage3(props) {
     const [countWords, setCountWords] = useState(10)
 
     function changeCountWords(e) {
-        setCountWords(e.target.dataset.value)
+        setCountWords(e.target.value)
     }
     function sendCountWords() {
         dispatch(getCountLearnWords(countWords))
@@ -23,54 +23,55 @@ export function HelloPage3(props) {
             >
                 <p>
                     Сколько слов Вы хотите учить в день? <br />
-                    (Это можно изменить в настройках)
+                    (Это можно будет потом изменить в настройках)
                 </p>
                 <div className='words-count'>
-                    <p>
-                        <label>
-                            <input
-                                name='wordsCount'
-                                type='radio'
-                                data-value='5'
-                                onClick={changeCountWords}
-                            />
-                            <span>5 слов</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            <input
-                                name='wordsCount'
-                                type='radio'
-                                data-value='10'
-                                required
-                                onClick={changeCountWords}
-                            />
-                            <span>10 слов</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            <input
-                                name='wordsCount'
-                                type='radio'
-                                data-value='15'
-                                onClick={changeCountWords}
-                            />
-                            <span>15 слов</span>
-                        </label>
-                    </p>
-                    <p>
-                        <label>
-                            <input
-                                name='wordsCount'
-                                type='radio'
-                                data-value='20'
-                                onClick={changeCountWords}
-                            />
-                            <span>20 слов</span>
-                        </label>
-                    </p>
+                    <label>
+                        <input
+                            name='wordsCount'
+                            type='radio'
+                            value='5'
+                            onChange={changeCountWords}
+                        />
+                        <span>5 слов</span>
+                    </label>
+                    <label>
+                        <input
+                            name='wordsCount'
+                            type='radio'
+                            value='10'
+                            checked
+                            onChange={changeCountWords}
+                        />
+                        <span>10 слов</span>
+                    </label>
+                    <label>
+                        <input
+                            name='wordsCount'
+                            type='radio'
+                            value='15'
+                            onChange={changeCountWords}
+                        />
+                        <span>15 слов</span>
+                    </label>
+                    <label>
+                        <input
+                            name='wordsCount'
+                            type='radio'
+                            value='20'
+                            onChange={changeCountWords}
+                        />
+                        <span>20 слов</span>
+                    </label>
+                    <label>
+                        <input
+                            name='wordsCount'
+                            type='radio'
+                            value='25'
+                            onChange={changeCountWords}
+                        />
+                        <span>25 слов</span>
+                    </label>
                 </div>
                 <button
                     className='btn'
@@ -85,7 +86,6 @@ export function HelloPage3(props) {
                 >
                     Далее
                 </button>
-                {/* </form> */}
             </div>
         </div>
     )

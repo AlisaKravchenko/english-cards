@@ -149,7 +149,7 @@ export function StatisticsSection() {
                             </li>
                         </ul>
                     </div>
-                    <canvas id='statisticsChart' height='300'></canvas>
+                    <canvas id='statisticsChart' height='200'></canvas>
                     <div className='statistics-total-words'>
                         <ul>
                             <li>
@@ -165,7 +165,8 @@ export function StatisticsSection() {
                                 <b>{totalWords.totalLearned}</b> заучено
                             </li>
                             <li>
-                                <b>{totalWords.totalRepeated}</b> раз повторено
+                                <b>{totalWords.totalRepeated}</b> раз(a)
+                                повторено
                             </li>
                             <li>
                                 <b>{totalWords.totalFullyLearned}</b> полностью
