@@ -23,16 +23,13 @@ export function HelloPages() {
     }, [])
     return (
         <>
-            <div className='container'>
-                <div className='hellow-page animate__animated animate__fadeInDown'>
-                    <h1>Добро пожаловать в English Cards!</h1>
-                    <img
-                        src='https://avatars.mds.yandex.net/get-zen_doc/1654267/pub_5fae89441064d30b6c27b59c_5fae8b2a70f5da1bda11f86f/scale_1200'
-                        alt=' '
-                    />
-                </div>
+            <div className='hellow-page animate__animated animate__fadeInDown'>
+                <h1>Добро пожаловать в English Cards!</h1>
+                <img
+                    src='https://avatars.mds.yandex.net/get-zen_doc/1654267/pub_5fae89441064d30b6c27b59c_5fae8b2a70f5da1bda11f86f/scale_1200'
+                    alt=' '
+                />
             </div>
-
             {currentPage}
         </>
     )

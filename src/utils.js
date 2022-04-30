@@ -18,11 +18,10 @@ export function voiceText(voiceEnWord, text, lang){
 	    utterance.lang = lang
 	    utterance.rate = 1
 	    speechSynthesis.speak(utterance) 
-        console.log('voice');
     }
 }
 
-export function getWordsToLearn(state){
+export function getWordsToLearn(state, wordsCount){
     const categories = state.categories
 
     let  wordsWithCategories = {}
@@ -37,7 +36,7 @@ export function getWordsToLearn(state){
     let randWords = {}
 
     let randCategories = []
-    for (let i = 0; i < state.countLearnWords; i++){
+    for (let i = 0; i < wordsCount; i++){
         randCategories.push(categories[getRandom(0, categories.length)])
     }
     // randCategories = ['A2', 'A2' ]
@@ -534,4 +533,15 @@ export function getStatisticsBtnStyle(statisticsPeriod, value, state){
                 ? 'black'
                 : 'inherit',
     }
+}
+
+export function checkRemainingWords(state){
+    const categories = state.categories
+    let flag = 0
+    categories.forEach((key) => {
+        if (state.words[key].length){
+            flag++
+        }
+    })
+    return flag === 0 ? false : true
 }

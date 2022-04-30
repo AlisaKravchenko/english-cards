@@ -19,7 +19,6 @@ const store = configureStore({
     statistics: statisticsSlice,
     router: connectRouter(history)
   },
-  // preloadedState: JSON.parse(localStorage.getItem('state')),
   middleware: [...getDefaultMiddleware(), routerMiddleware(history)]
 })
 
