@@ -1,7 +1,7 @@
 import { push } from 'connected-react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { API_KEY_YANDEX } from './../config'
+import { API_KEY_YANDEX } from '../config.js'
 import { Preloader } from '../layout/Preloader'
 import {
     addRepeatWord,
