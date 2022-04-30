@@ -1,7 +1,6 @@
 import { push } from 'connected-react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { API_KEY_YANDEX } from '../config.js'
 import { Preloader } from '../layout/Preloader'
 import {
     addRepeatWord,
@@ -10,6 +9,8 @@ import {
 } from '../redux/learningSlice'
 import { addToStatistics, checkFullyLearned } from '../redux/statisticsSlice'
 import { getCardWordContent, getRandom } from '../utils'
+
+const API_KEY_YANDEX = process.env.REACT_APP_API_KEY
 
 export function RepeatCard(props) {
     const state = useSelector((state) => state.learning)

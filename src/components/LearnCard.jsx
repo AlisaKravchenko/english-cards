@@ -1,7 +1,6 @@
 import { push } from 'connected-react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { API_KEY_YANDEX } from '../config'
 import { Preloader } from '../layout/Preloader'
 import {
     addLearnedToday,
@@ -11,6 +10,8 @@ import {
 } from '../redux/learningSlice'
 import { addToStatistics } from '../redux/statisticsSlice'
 import { getCardWordContent, getRandom } from '../utils'
+
+const API_KEY_YANDEX = process.env.REACT_APP_API_KEY
 
 window.voiceTextInput = false
 export function LearnCard(props) {

@@ -1,10 +1,11 @@
 import { push } from 'connected-react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { API_KEY_YANDEX } from '../config'
 import { Preloader } from '../layout/Preloader'
 import { deleteWord } from '../redux/learningSlice'
 import { getCardWordContent, getRandom } from '../utils'
+
+const API_KEY_YANDEX = process.env.REACT_APP_API_KEY
 
 window.voiceTextInput = false
 export function NewCard(props) {
