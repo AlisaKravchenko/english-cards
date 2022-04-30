@@ -630,7 +630,11 @@ main {
         margin: 0 auto;
     }
 }
-
+.scroll {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 @media (min-width: 992px) {
     .scroll {
         height: calc(100vh - 77px - 2rem);

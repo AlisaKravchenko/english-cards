@@ -1,4 +1,5 @@
-import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
+// import {createAsyncThunk} from "@reduxjs/toolkit"
 import { allWords } from "../allWords";
 import { getRepeatTime } from "../utils";
 const initialState = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).learning :  {
@@ -7,14 +8,14 @@ const initialState = localStorage.getItem('state') ? JSON.parse(localStorage.get
     words: allWords,
     categories: [],
     repeat: {
-        // '1800000': [],
-        // '7200000': [],
-        // '43200000': [],
-        // '86400000': [],
-        // '604800000': [],
-        // '5256000000': []
-        '1000': [],
-        '1001': [],
+        '1800000': [],
+        '7200000': [],
+        '43200000': [],
+        '86400000': [],
+        '604800000': [],
+        '5256000000': []
+        // '1000': [],
+        // '1001': [],
     },
     learnedToday: {
         day: null,
