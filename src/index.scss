@@ -667,7 +667,13 @@ main {
         }
     }
 }
-
+@media (max-width: 800px) {
+    .word-mic-section{
+        .word{
+            line-height: 2.5rem;
+        }
+    }
+}
 @media (max-width: 700px) {
     .word-mic-section{
         .word{
