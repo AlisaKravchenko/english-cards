@@ -1,0 +1,75 @@
+Date : 2022-05-01 14:01:49
+Directory : d:\Документы\Сайты\english-cards
+Total : 39 files,  46139 codes, 81 comments, 168 blanks, all 46388 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| JSON             |          3 |     37,214 |          0 |          3 |     37,217 |
+| JavaScript       |          9 |      6,243 |         29 |         59 |      6,331 |
+| JavaScript React |         24 |      1,934 |         52 |         79 |      2,065 |
+| SCSS             |          1 |        714 |          0 |         23 |        737 |
+| HTML             |          1 |         32 |          0 |          1 |         33 |
+| Markdown         |          1 |          2 |          0 |          3 |          5 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                      | files      | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                         |         39 |     46,139 |         81 |        168 |     46,388 |
+| public                                                                    |          2 |         57 |          0 |          2 |         59 |
+| src                                                                       |         34 |      8,891 |         81 |        161 |      9,133 |
+| src\components                                                            |          6 |        921 |         18 |         28 |        967 |
+| src\layout                                                                |          3 |         59 |          0 |          4 |         63 |
+| src\pages                                                                 |         15 |        954 |         34 |         47 |      1,035 |
+| src\pages\firstVisitPages                                                 |          5 |        212 |          1 |         13 |        226 |
+| src\redux                                                                 |          3 |        154 |         19 |         11 |        184 |
++---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++---------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                                  | language         | code       | comment    | blank      | total      |
++---------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| d:\Документы\Сайты\english-cards\README.md                                | Markdown         |          2 |          0 |          3 |          5 |
+| d:\Документы\Сайты\english-cards\package-lock.json                        | JSON             |     37,134 |          0 |          1 |     37,135 |
+| d:\Документы\Сайты\english-cards\package.json                             | JSON             |         55 |          0 |          1 |         56 |
+| d:\Документы\Сайты\english-cards\public\index.html                        | HTML             |         32 |          0 |          1 |         33 |
+| d:\Документы\Сайты\english-cards\public\manifest.json                     | JSON             |         25 |          0 |          1 |         26 |
+| d:\Документы\Сайты\english-cards\src\App.js                               | JavaScript       |         70 |          0 |          8 |         78 |
+| d:\Документы\Сайты\english-cards\src\allWords.js                          | JavaScript       |          7 |          0 |          0 |          7 |
+| d:\Документы\Сайты\english-cards\src\components\Category.jsx              | JavaScript React |         85 |          0 |          2 |         87 |
+| d:\Документы\Сайты\english-cards\src\components\LearnCard.jsx             | JavaScript React |        163 |          4 |          7 |        174 |
+| d:\Документы\Сайты\english-cards\src\components\LearningSection.jsx       | JavaScript React |        167 |          0 |          4 |        171 |
+| d:\Документы\Сайты\english-cards\src\components\NewCard.jsx               | JavaScript React |        141 |          4 |          8 |        153 |
+| d:\Документы\Сайты\english-cards\src\components\RepeatCard.jsx            | JavaScript React |        179 |          9 |          5 |        193 |
+| d:\Документы\Сайты\english-cards\src\components\StatisticsSection.jsx     | JavaScript React |        186 |          1 |          2 |        189 |
+| d:\Документы\Сайты\english-cards\src\constants.js                         | JavaScript       |          3 |          0 |          0 |          3 |
+| d:\Документы\Сайты\english-cards\src\darkTheme.js                         | JavaScript       |      5,432 |          4 |          7 |      5,443 |
+| d:\Документы\Сайты\english-cards\src\index.js                             | JavaScript       |         27 |          0 |          5 |         32 |
+| d:\Документы\Сайты\english-cards\src\index.scss                           | SCSS             |        714 |          0 |         23 |        737 |
+| d:\Документы\Сайты\english-cards\src\layout\Footer.jsx                    | JavaScript React |          0 |          0 |          1 |          1 |
+| d:\Документы\Сайты\english-cards\src\layout\Header.jsx                    | JavaScript React |         52 |          0 |          2 |         54 |
+| d:\Документы\Сайты\english-cards\src\layout\Preloader.jsx                 | JavaScript React |          7 |          0 |          1 |          8 |
+| d:\Документы\Сайты\english-cards\src\pages\Categories.jsx                 | JavaScript React |         60 |          0 |          3 |         63 |
+| d:\Документы\Сайты\english-cards\src\pages\EndLearning.jsx                | JavaScript React |         42 |          0 |          4 |         46 |
+| d:\Документы\Сайты\english-cards\src\pages\EndLearningCategories.jsx      | JavaScript React |         28 |          0 |          2 |         30 |
+| d:\Документы\Сайты\english-cards\src\pages\EndRepeat.jsx                  | JavaScript React |         30 |          0 |          2 |         32 |
+| d:\Документы\Сайты\english-cards\src\pages\Glossary.jsx                   | JavaScript React |        129 |         31 |          2 |        162 |
+| d:\Документы\Сайты\english-cards\src\pages\Home.jsx                       | JavaScript React |         14 |          0 |          2 |         16 |
+| d:\Документы\Сайты\english-cards\src\pages\Learn.jsx                      | JavaScript React |         81 |          0 |          4 |         85 |
+| d:\Документы\Сайты\english-cards\src\pages\PageNotFound.jsx               | JavaScript React |         22 |          0 |          3 |         25 |
+| d:\Документы\Сайты\english-cards\src\pages\Repeat.jsx                     | JavaScript React |         39 |          0 |          4 |         43 |
+| d:\Документы\Сайты\english-cards\src\pages\Settings.jsx                   | JavaScript React |        297 |          2 |          8 |        307 |
+| d:\Документы\Сайты\english-cards\src\pages\firstVisitPages\HelloPage1.jsx | JavaScript React |         28 |          0 |          2 |         30 |
+| d:\Документы\Сайты\english-cards\src\pages\firstVisitPages\HelloPage2.jsx | JavaScript React |         35 |          0 |          3 |         38 |
+| d:\Документы\Сайты\english-cards\src\pages\firstVisitPages\HelloPage3.jsx | JavaScript React |         87 |          0 |          4 |         91 |
+| d:\Документы\Сайты\english-cards\src\pages\firstVisitPages\HelloPage4.jsx | JavaScript React |         27 |          1 |          2 |         30 |
+| d:\Документы\Сайты\english-cards\src\pages\firstVisitPages\HelloPages.jsx | JavaScript React |         35 |          0 |          2 |         37 |
+| d:\Документы\Сайты\english-cards\src\redux\homeSlice.js                   | JavaScript       |         21 |          0 |          2 |         23 |
+| d:\Документы\Сайты\english-cards\src\redux\learningSlice.js               | JavaScript       |         91 |         13 |          6 |        110 |
+| d:\Документы\Сайты\english-cards\src\redux\statisticsSlice.js             | JavaScript       |         42 |          6 |          3 |         51 |
+| d:\Документы\Сайты\english-cards\src\utils.js                             | JavaScript       |        550 |          6 |         28 |        584 |
+| Total                                                                     |                  |     46,139 |         81 |        168 |     46,388 |
++---------------------------------------------------------------------------+------------------+------------+------------+------------+------------+

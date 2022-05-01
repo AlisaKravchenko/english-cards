@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.scss';
 import App from './App';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
@@ -22,10 +22,10 @@ const store = configureStore({
   middleware: [...getDefaultMiddleware(), routerMiddleware(history)]
 })
 
-ReactDOM.render(
+const root = createRoot(document.getElementById('root'))
+root.render(
   <Provider store={store}>
     <App />
-  </Provider>,
-  document.getElementById('root')
-);
+  </Provider>
+)
 
