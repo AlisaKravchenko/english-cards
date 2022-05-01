@@ -15,7 +15,15 @@ export function voiceText(voiceEnWord, text, lang){
     if (voiceEnWord){
         lang = lang ? lang : 'en-US'
         const utterance = new SpeechSynthesisUtterance(text)
-	    utterance.lang = lang
+        const utteranceLang = window.speechSynthesis
+        const voices = utteranceLang.getVoices()
+        let voice = {}
+        voices.forEach(el => {
+            if (el.lang === lang){
+                voice = el
+            }
+        })
+        utterance.voice = voice
 	    utterance.rate = 1
 	    speechSynthesis.speak(utterance) 
     }
@@ -110,21 +118,21 @@ export function translateInput(translateWord, attempts, firstShowLang, voiceEnWo
     const translateField = document.querySelector(
         '[data-type="translate-field"]'
     )
-    if (input.value.trim() === translateWord.trim()) {
+    if (input.value.toLowerCase().trim() === translateWord.toLowerCase().trim()) {
         input.style.background = '#9aeb9a' // green
         translateField.style.display = 'block'
-        if (firstShowLang === 'ru'){
+        if (firstShowLang === 'ru-RU'){
             voiceText(voiceEnWord, translateWord)
             window.voiceTextInput = true
         }
-    } else if (translateWord.split(',').includes(input.value)) {
+    } else if (translateWord.split(',').includes(input.value.toLowerCase())) {
         input.style.background = '#ffc81e' // yellow
         translateField.style.display = 'block'
-        if (firstShowLang === 'ru'){
+        if (firstShowLang === 'ru-RU'){
             voiceText(voiceEnWord, translateWord)
             window.voiceTextInput = true
         }
-    } else if (input.value !== translateWord) {
+    } else if (input.value.toLowerCase() !== translateWord.toLowerCase()) {
         input.style.background = '#ff5422' // red
         setTimeout(() => {
             input.style.background = 'transparent'
@@ -139,7 +147,7 @@ export function translateInput(translateWord, attempts, firstShowLang, voiceEnWo
             case 1:
                 attempts = attempts.slice(0, 1) - 1 + ' попытка'
                 translateField.style.display = 'block'
-                if (firstShowLang === 'ru'){
+                if (firstShowLang === 'ru-RU'){
                     voiceText(voiceEnWord, translateWord)
                     window.voiceTextInput = true
                 }
@@ -157,7 +165,7 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
     let firstShowWord = currentWord
     let translateWord = translate.current
     switch(firstShowLang){
-        case 'ru': 
+        case 'ru-RU': 
             firstShowWord = translate.current
             translateWord = currentWord
             break
@@ -165,7 +173,7 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
             if (random === 1){
                 firstShowWord = translate.current
                 translateWord = currentWord
-                firstShowLang = 'ru'
+                firstShowLang = 'ru-RU'
 
             } else {
                 firstShowLang = 'en-US'
@@ -223,7 +231,7 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                             document.querySelector(
                                 '[data-type="translate-field"]'
                             ).style.display = 'block'
-                            if (firstShowLang === 'ru'){
+                            if (firstShowLang === 'ru-RU'){
                                 voiceText(voiceEnWord, translateWord)
                             }
                         }}
@@ -304,7 +312,7 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                         <div className='translate-word-wrap'>
                         <p className='translate-word'>
                             {translateWord.split(',').splice(0, synonymsCount).join(', ')}
-                            <span className='ts' style={{display: firstShowLang === 'ru' && showTranscription ? 'block' : 'none'}}>{transcription.current}</span>
+                            <span className='ts' style={{display: firstShowLang === 'ru-RU' && showTranscription ? 'block' : 'none'}}>{transcription.current}</span>
                         </p>
                         </div>
                         

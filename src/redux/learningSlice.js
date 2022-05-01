@@ -4,7 +4,7 @@ import { allWords } from "../allWords";
 import { getRepeatTime } from "../utils";
 const initialState = localStorage.getItem('state') ? JSON.parse(localStorage.getItem('state')).learning :  {
     countLearnWords: '5',
-    firstShowLang: 'ru',
+    firstShowLang: 'ru-RU',
     words: allWords,
     categories: [],
     repeat: {

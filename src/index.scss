@@ -671,6 +671,8 @@ main {
     .word-mic-section{
         .word{
             line-height: 2.5rem;
+            overflow: visible;
+            margin-bottom: 1rem;
         }
     }
 }

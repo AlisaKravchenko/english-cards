@@ -40,9 +40,6 @@ export function App(props) {
     } else {
       document.body.style.background = BASE_BACKGROUND
     }
-    if (localStorage.getItem('first-visit')){
-      dispatch(push('/home'))
-    }
 }, [state.home, dispatch])
   
   

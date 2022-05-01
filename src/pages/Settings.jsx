@@ -34,7 +34,7 @@ export function Settings() {
             case 'en-US':
                 phrase = 'Только английский'
                 break
-            case 'ru':
+            case 'ru-RU':
                 phrase = 'Только русский'
                 break
             case 'random':
@@ -146,7 +146,7 @@ export function Settings() {
                                 aria-label='Default select example'
                             >
                                 <option disabled>Выберите язык</option>
-                                <option value='ru'>Только русский</option>
+                                <option value='ru-RU'>Только русский</option>
                                 <option value='en-US'>Только английский</option>
                                 <option value='random'>Случайно</option>
                             </select>
@@ -242,6 +242,7 @@ export function Settings() {
                     <div
                         className='accordion'
                         id='accordionPanelsStayOpenExample'
+                        style={{ marginBottom: '2rem' }}
                     >
                         <div className='accordion-item'>
                             <h2
