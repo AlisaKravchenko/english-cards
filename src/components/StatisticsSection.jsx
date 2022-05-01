@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
-import { createLineChart, getStatisticsBtnStyle } from '../utils'
+import {
+    createLineChart,
+    getChartHeight,
+    getStatisticsBtnStyle,
+} from '../utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCountLearnWords } from '../redux/learningSlice'
 
@@ -149,7 +153,10 @@ export function StatisticsSection() {
                             </li>
                         </ul>
                     </div>
-                    <canvas id='statisticsChart' height='200'></canvas>
+                    <canvas
+                        id='statisticsChart'
+                        height={getChartHeight()}
+                    ></canvas>
                     <div className='statistics-total-words'>
                         <ul>
                             <li>

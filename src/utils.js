@@ -173,7 +173,7 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
             }
             break
         case 'en-US': 
-         if (+attempts.slice(0,1) === 0){
+         if (+attempts.slice(0,1) === 0 || +attempts.slice(0,1) === 3){
             voiceText(voiceEnWord, currentWord)
          }
             
@@ -182,27 +182,30 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
     }
     return (
         <div>
-            <p
-                style={{
-                    marginBottom: '-1rem',
-                    color: 'grey',
-                }}
-            >
-                Oxford, {currentCategory.slice(0, 2)}
-            </p>
-            
             <div className='word-mic-section'>
-            <p className='word'>{firstShowWord.split(',').slice(0, synonymsCount).join(',')}</p>
-            <button
-                className='btn hear-btn'
-                onClick={() => {
-                    voiceText(true, firstShowWord.split(',').slice(0, synonymsCount).join(','), firstShowLang)
-                }}
-            >
-                <span className='material-icons'>mic</span>
-            </button>
+                <div className='div-word'>
+                    <p
+                        style={{
+                            marginBottom: '-1.2rem',
+                            color: 'grey',
+                        }}
+                    >
+                        Oxford, {currentCategory.slice(0, 2)}
+                    </p>
+                    <p className='word'>{firstShowWord.split(',').slice(0, synonymsCount).join(',')}</p>
+                    <p className='ts' style={{display: firstShowLang === 'en-US' && showTranscription ? 'block' : 'none'}}>{transcription.current}</p>
+                </div>
+                <div>
+                    <button
+                        className='btn hear-btn'
+                        onClick={() => {
+                            voiceText(true, firstShowWord.split(',').slice(0, synonymsCount).join(','), firstShowLang)
+                        }}
+                    >
+                        <span className='material-icons'>mic</span>
+                    </button>
+                </div>
             </div>
-            <p className='ts' style={{display: firstShowLang === 'en-US' && showTranscription ? 'block' : 'none'}}>{transcription.current}</p>
             <div className='repeat-sections'>
                 <div
                     className='repeat-buttons'
@@ -298,11 +301,12 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
                         className='repeat-section'
                         data-type='translate-field'
                     >
-                        <p >
-                            {translateWord.split(',')[0]}
-                            <span style={{color: 'grey'}}><span style={{display: translateWord.split(',').length > 1 ? 'inline-block' : 'none'}}>,</span>{translateWord.split(',').splice(1, synonymsCount - 1).join(', ')}</span>
+                        <div className='translate-word-wrap'>
+                        <p className='translate-word'>
+                            {translateWord.split(',').splice(0, synonymsCount).join(', ')}
                             <span className='ts' style={{display: firstShowLang === 'ru' && showTranscription ? 'block' : 'none'}}>{transcription.current}</span>
                         </p>
+                        </div>
                         
                         {examples.current.length ? (
                             <ul className='examples'>
@@ -544,4 +548,28 @@ export function checkRemainingWords(state){
         }
     })
     return flag === 0 ? false : true
+}
+
+export function getChartHeight(){
+    const scrollWidth = Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.body.clientWidth,
+        document.documentElement.clientWidth
+    )
+    let chartHeight = 200
+    if (scrollWidth <= 200){
+        chartHeight = 600
+    } else if (scrollWidth <= 300){
+        chartHeight = 500
+    } else if (scrollWidth <= 400) {
+        chartHeight = 400
+    } else if (scrollWidth <= 500) {
+        chartHeight = 350
+    } else if (scrollWidth <= 600) {
+        chartHeight = 300
+    }
+    return chartHeight
 }
