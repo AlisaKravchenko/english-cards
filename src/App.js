@@ -16,7 +16,6 @@ import { useEffect } from 'react';
 import { BASE_BACKGROUND, DARK_THEME_BACKGROUND, LIGHT_THEME_BACKGROUND } from './constants';
 import { PageNotFound } from './pages/PageNotFound';
 import { changeTheme } from './utils';
-import { logDOM } from '@testing-library/react';
 
 export function App(props) {
   const state = useSelector(state => state)
