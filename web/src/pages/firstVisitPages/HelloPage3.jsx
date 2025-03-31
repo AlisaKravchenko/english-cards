@@ -18,7 +18,7 @@ export function HelloPage3(props) {
     return (
         <div
             data-page='page'
-            className='animate__animated animate__slideInLeft hellow-page hellow-page3'
+            className='animate__animated animate__slideInRight hellow-page hellow-page3'
         >
             <p>
                 Сколько слов Вы хотите учить в день? <br />

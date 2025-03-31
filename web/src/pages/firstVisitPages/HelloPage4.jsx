@@ -7,7 +7,7 @@ export function HelloPage4(props) {
     return (
         <div
             data-page='page'
-            className='animate__animated animate__slideInLeft hellow-page1  hellow-page4 hellow-page'
+            className='animate__animated animate__slideInRight hellow-page1  hellow-page4 hellow-page'
         >
             <h3>Все готово!</h3>
             <button

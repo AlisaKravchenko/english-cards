@@ -5,10 +5,10 @@ import { darkStyles } from './darkTheme'
 export function changePageAnimation(){
     document
         .querySelector('[data-page="page"]')
-        .classList.remove('animate__slideInLeft')
+        .classList.remove('animate__slideInRight')
     document
         .querySelector('[data-page="page"]')
-        .classList.add('animate__fadeOutRight')
+        .classList.add('animate__fadeOutLeft')
 }
 
 export function voiceText(voiceEnWord, text, lang){

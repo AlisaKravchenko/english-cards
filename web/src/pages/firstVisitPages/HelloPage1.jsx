@@ -5,7 +5,7 @@ export function HelloPage1(props) {
     return (
         <div
             data-page='page'
-            className='animate__animated animate__slideInLeft hellow-page1  hellow-page1 hellow-page'
+            className='animate__animated animate__slideInRight hellow-page1  hellow-page1 hellow-page'
         >
             <p>Учите английские слова быстро, легко и эффективно!</p>
             <p>

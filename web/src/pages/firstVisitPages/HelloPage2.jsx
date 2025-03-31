@@ -5,7 +5,7 @@ export function HelloPage2(props) {
     return (
         <div
             data-page='page'
-            className='hellow-page2 hellow-page animate__animated animate__slideInLeft'
+            className='hellow-page2 hellow-page animate__animated animate__slideInRight'
         >
             <p>
                 Каждое слово имеет свою карточку с транскрипцией, переводом и

@@ -15,14 +15,17 @@ export function Learn() {
     const words = []
 
     const nextCard = (lastLearned) => {
-        console.log(lastLearned)
         practiseWordsRef.current = getWordsToLearn(state, 1)
         const currentWordObj = {
             [Object.keys(practiseWordsRef.current)[0]]: Object.values(
                 practiseWordsRef.current
             )[0],
         }
-        if (words.length + 1 < state.countLearnWords) {
+
+        if (
+            words.length + 1 <
+            Number(state.countLearnWords) - state.learnedToday.count
+        ) {
             if (lastLearned) {
                 const card = (
                     <NewCard
@@ -42,8 +45,12 @@ export function Learn() {
                 setCurrentCard(card)
             }
         } else {
-            if (words.length + 1 === +state.countLearnWords) {
+            if (
+                words.length + 1 ===
+                +Number(state.countLearnWords) - state.learnedToday.count
+            ) {
                 words.push(currentWordObj)
+
                 cards = words.map((el) => (
                     <LearnCard currentWordObj={el} nextCard={nextCard} />
                 ))
@@ -71,7 +78,7 @@ export function Learn() {
     ]
 
     const [currentCard, setCurrentCard] = useState(cards[0])
-    console.log(currentCard)
+
     return (
         <>
             {currentCard && state.learnedToday.count < state.countLearnWords ? (
