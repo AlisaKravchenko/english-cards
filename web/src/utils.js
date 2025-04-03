@@ -88,26 +88,21 @@ export function getRepeatTime(repeatsCount, state){
 }
 
 export function getRepeatTimeEnding(state){
-    let timeLearning = 0
+    let timeLearning = 0;
+    let interval = 100000000000000;
     for (let key in state.repeat) {
-        if (state.repeat[key].length) {
-            let flag = 0
-            if (state.repeat[key][0] && flag === 0){
-                flag = 1
-                const interval = key - Date.now() + state.repeat[key][0].time
-                if (+key >= 604800000){
-                    timeLearning = Math.round(interval / 604800000) + ' нед.'
-                } else if (+key >= 86400000){
-                    timeLearning = Math.round(interval / 86400000) + ' дн.'
-                } else if (+key >= 7200000) {
-                    timeLearning = Math.round(interval / 3600000) + ' ч.'
-                } else{
-                    timeLearning = Math.round(interval / 60000) + ' мин.'
-                }
-            }
-                
-            
+        for (let i=0; i < state.repeat[key].length;i++){
+            interval = Math.min(interval,key - Date.now() + state.repeat[key][i].time)
         }
+    }
+    if (interval >= 604800000){
+        timeLearning = Math.round(interval / 604800000) + ' нед.'
+    } else if (interval >= 86400000){
+        timeLearning = Math.round(interval / 86400000) + ' дн.'
+    } else if (interval >= 7200000) {
+        timeLearning = Math.round(interval / 3600000) + ' ч.'
+    } else{
+        timeLearning = Math.round(interval / 60000) + ' мин.'
     }
     return timeLearning
 }
