@@ -92,7 +92,6 @@ export function getRepeatTimeEnding(state){
     let interval = 100000000000000;
     for (let key in state.repeat) {
         for (let i=0; i < state.repeat[key].length;i++){
-            console.log(i)
             interval = Math.min(interval,key - Date.now() + state.repeat[key][i].time)
         }
     }
