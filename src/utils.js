@@ -105,7 +105,6 @@ export function getRepeatTimeEnding(state){
     } else{
         timeLearning = Math.round(interval / 60000) + ' мин.'
     }
-    console.log(interval)
     return timeLearning
 }
 
