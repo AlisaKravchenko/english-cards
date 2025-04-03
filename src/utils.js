@@ -89,16 +89,13 @@ export function getRepeatTime(repeatsCount, state){
 
 export function getRepeatTimeEnding(state){
     let timeLearning = 0;
-    let interval
+    let interval = 100000000000000;
     for (let key in state.repeat) {
-        for (let key1 in state.repeat[key]) {
-           
-            interval = Math.min(interval,key - Date.now() + key1.time)
-                
-            
+        for (let i=0; i < state.repeat[key].length;i++){
+            console.log(i)
+            interval = Math.min(interval,key - Date.now() + state.repeat[key][i].time)
         }
     }
-    
     if (interval >= 604800000){
         timeLearning = Math.round(interval / 604800000) + ' нед.'
     } else if (interval >= 86400000){
@@ -108,6 +105,7 @@ export function getRepeatTimeEnding(state){
     } else{
         timeLearning = Math.round(interval / 60000) + ' мин.'
     }
+    console.log(interval)
     return timeLearning
 }
 
