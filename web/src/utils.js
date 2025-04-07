@@ -23,9 +23,12 @@ export function voiceText(voiceEnWord, text, lang){
                 voice = el
             }
         })
-        utterance.voice = voice
-	    utterance.rate = 1
-	    speechSynthesis.speak(utterance) 
+        if (voices.length){
+            utterance.voice = voice
+	        utterance.rate = 1
+	        speechSynthesis.speak(utterance) 
+        }
+        
     }
 }
 
@@ -92,7 +95,6 @@ export function getRepeatTimeEnding(state){
     let interval = 100000000000000;
     for (let key in state.repeat) {
         for (let i=0; i < state.repeat[key].length;i++){
-            console.log(i)
             interval = Math.min(interval,key - Date.now() + state.repeat[key][i].time)
         }
     }
@@ -105,35 +107,46 @@ export function getRepeatTimeEnding(state){
     } else{
         timeLearning = Math.round(interval / 60000) + ' мин.'
     }
-    console.log(interval)
     return timeLearning
 }
-
 
 export function translateInput(translateWord, attempts, firstShowLang, voiceEnWord) {
     const input = document.querySelector('[data-type="input-translate"]')
     const translateField = document.querySelector(
         '[data-type="translate-field"]'
     )
+    const inputField = document.querySelector(
+        '[data-type="input-field"]'
+    )
     if (input.value.toLowerCase().trim() === translateWord.toLowerCase().trim()) {
         input.style.background = '#9aeb9a' // green
-        translateField.style.display = 'block'
-        if (firstShowLang === 'ru-RU'){
-            voiceText(voiceEnWord, translateWord)
-            window.voiceTextInput = true
-        }
+        
+        // inputField.style.display = 'none'
+        setTimeout(() => {
+            translateField.style.display = 'block'
+            if (firstShowLang === 'ru-RU'){
+                voiceText(voiceEnWord, translateWord)
+                window.voiceTextInput = true
+            }
+            inputField.style.display = 'none'
+        }, 500)
     } else if (translateWord.split(',').includes(input.value.toLowerCase())) {
         input.style.background = '#ffc81e' // yellow
-        translateField.style.display = 'block'
-        if (firstShowLang === 'ru-RU'){
-            voiceText(voiceEnWord, translateWord)
-            window.voiceTextInput = true
-        }
+        
+        setTimeout(() => {
+            translateField.style.display = 'block'
+            if (firstShowLang === 'ru-RU'){
+                voiceText(voiceEnWord, translateWord)
+                window.voiceTextInput = true
+                
+            }
+            inputField.style.display = 'none'
+        }, 300)
     } else if (input.value.toLowerCase() !== translateWord.toLowerCase()) {
         input.style.background = '#ff5422' // red
         setTimeout(() => {
             input.style.background = 'transparent'
-        }, 500)
+        }, 300)
         switch (+attempts.slice(0, 1)) {
             case 3:
                 attempts = attempts.slice(0, 1) - 1 + ' попытки'
@@ -143,11 +156,16 @@ export function translateInput(translateWord, attempts, firstShowLang, voiceEnWo
                 break
             case 1:
                 attempts = attempts.slice(0, 1) - 1 + ' попытка'
-                translateField.style.display = 'block'
-                if (firstShowLang === 'ru-RU'){
-                    voiceText(voiceEnWord, translateWord)
-                    window.voiceTextInput = true
-                }
+                setTimeout(() => {
+                    
+                    translateField.style.display = 'block'
+                    inputField.style.display = 'none'
+                    if (firstShowLang === 'ru-RU'){
+                        voiceText(voiceEnWord, translateWord)
+                        window.voiceTextInput = true
+                    }
+                }, 300)
+            
                 break
             default:
                 break
@@ -175,7 +193,9 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
 
             } else {
                 firstShowLang = 'en-US'
-                voiceText(voiceEnWord, currentWord)
+                if (+attempts.slice(0,1) === 0 || +attempts.slice(0,1) === 3){
+                    voiceText(voiceEnWord, currentWord)
+                }
             }
             break
         case 'en-US': 
