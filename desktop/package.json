@@ -2,7 +2,7 @@
   "name": "electron-app",
   "productName": "electron-app",
   "version": "1.0.0",
-  "description": "Memory Circles",
+  "description": "English Cards",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
