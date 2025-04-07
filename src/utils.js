@@ -23,9 +23,12 @@ export function voiceText(voiceEnWord, text, lang){
                 voice = el
             }
         })
-        utterance.voice = voice
-	    utterance.rate = 1
-	    speechSynthesis.speak(utterance) 
+        if (voices.length){
+            utterance.voice = voice
+	        utterance.rate = 1
+	        speechSynthesis.speak(utterance) 
+        }
+        
     }
 }
 
@@ -190,7 +193,9 @@ export function getCardWordContent(currentCategory, currentWord, transcription, 
 
             } else {
                 firstShowLang = 'en-US'
-                voiceText(voiceEnWord, currentWord)
+                if (+attempts.slice(0,1) === 0 || +attempts.slice(0,1) === 3){
+                    voiceText(voiceEnWord, currentWord)
+                }
             }
             break
         case 'en-US': 
