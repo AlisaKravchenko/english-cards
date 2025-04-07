@@ -112,25 +112,38 @@ export function translateInput(translateWord, attempts, firstShowLang, voiceEnWo
     const translateField = document.querySelector(
         '[data-type="translate-field"]'
     )
+    const inputField = document.querySelector(
+        '[data-type="input-field"]'
+    )
     if (input.value.toLowerCase().trim() === translateWord.toLowerCase().trim()) {
         input.style.background = '#9aeb9a' // green
-        translateField.style.display = 'block'
-        if (firstShowLang === 'ru-RU'){
-            voiceText(voiceEnWord, translateWord)
-            window.voiceTextInput = true
-        }
+        
+        // inputField.style.display = 'none'
+        setTimeout(() => {
+            translateField.style.display = 'block'
+            if (firstShowLang === 'ru-RU'){
+                voiceText(voiceEnWord, translateWord)
+                window.voiceTextInput = true
+            }
+            inputField.style.display = 'none'
+        }, 500)
     } else if (translateWord.split(',').includes(input.value.toLowerCase())) {
         input.style.background = '#ffc81e' // yellow
-        translateField.style.display = 'block'
-        if (firstShowLang === 'ru-RU'){
-            voiceText(voiceEnWord, translateWord)
-            window.voiceTextInput = true
-        }
+        
+        setTimeout(() => {
+            translateField.style.display = 'block'
+            if (firstShowLang === 'ru-RU'){
+                voiceText(voiceEnWord, translateWord)
+                window.voiceTextInput = true
+                
+            }
+            inputField.style.display = 'none'
+        }, 300)
     } else if (input.value.toLowerCase() !== translateWord.toLowerCase()) {
         input.style.background = '#ff5422' // red
         setTimeout(() => {
             input.style.background = 'transparent'
-        }, 500)
+        }, 300)
         switch (+attempts.slice(0, 1)) {
             case 3:
                 attempts = attempts.slice(0, 1) - 1 + ' попытки'
@@ -140,11 +153,16 @@ export function translateInput(translateWord, attempts, firstShowLang, voiceEnWo
                 break
             case 1:
                 attempts = attempts.slice(0, 1) - 1 + ' попытка'
-                translateField.style.display = 'block'
-                if (firstShowLang === 'ru-RU'){
-                    voiceText(voiceEnWord, translateWord)
-                    window.voiceTextInput = true
-                }
+                setTimeout(() => {
+                    
+                    translateField.style.display = 'block'
+                    inputField.style.display = 'none'
+                    if (firstShowLang === 'ru-RU'){
+                        voiceText(voiceEnWord, translateWord)
+                        window.voiceTextInput = true
+                    }
+                }, 300)
+            
                 break
             default:
                 break
